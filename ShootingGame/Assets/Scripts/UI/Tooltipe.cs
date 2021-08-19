@@ -9,6 +9,7 @@ namespace UI.ShootingGame
         private void OnGUI()
         {
             GUI.Box(new Rect(5, 10, Screen.width / 7, 60), "Подсказки:");
+            
             _guiStyle.normal.textColor = Color.white;
 
             DrawButtonNameLabel(40, "P");

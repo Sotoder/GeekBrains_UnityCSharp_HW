@@ -23,7 +23,6 @@ namespace Model.ShootingGame
             _rb = GetComponent<Rigidbody>();
 
             Cursor.lockState = CursorLockMode.Locked;
-            PlayerPrefs.SetInt("_isShowTooltip", 0);
         }
 
         private void Update()
@@ -41,8 +40,8 @@ namespace Model.ShootingGame
 
         private void FixedUpdate()
         {
-            _moveForvard = transform.forward * _input.Direction.x * _speed;
-            _moveRight = transform.right * _input.Direction.z * _speed;
+            _moveForvard = _input.Direction.x * _speed * transform.forward;
+            _moveRight = _input.Direction.z * _speed * transform.right;
 
             _mouseLookX = _input.MouseLookX * _sensetivity;
             _mouseLookY = _input.MouseLookY * _sensetivity;
