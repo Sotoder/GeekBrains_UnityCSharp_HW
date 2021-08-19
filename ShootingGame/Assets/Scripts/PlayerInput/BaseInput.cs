@@ -5,7 +5,7 @@ namespace PlayerInput.ShootingGame
     {
         protected Vector3 _direction;
         protected float mouseLookX;
-        protected float mouseLookY;
+        //protected float mouseLookY;
         protected bool _isFire;
 
         private void FixedUpdate()
@@ -14,7 +14,7 @@ namespace PlayerInput.ShootingGame
             _direction.x = Input.GetAxis("Vertical");
 
             mouseLookX = Input.GetAxis("Mouse X");
-            mouseLookY = Input.GetAxis("Mouse Y");
+            //mouseLookY = Input.GetAxis("Mouse Y");
 
             OpenFire();
         }

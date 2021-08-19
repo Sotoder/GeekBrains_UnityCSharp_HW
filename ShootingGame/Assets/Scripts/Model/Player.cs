@@ -8,8 +8,8 @@ namespace Model.ShootingGame
         [SerializeField] private float _sensetivity;
 
         private float _mouseLookX;
-        private float _mouseLookY;
-        float _xRotation;
+        //private float _mouseLookY;
+        //float _xRotation;
 
         private IInput _input;
         private Vector3 _moveForvard;
@@ -44,7 +44,7 @@ namespace Model.ShootingGame
             _moveRight = _input.Direction.z * _speed * transform.right;
 
             _mouseLookX = _input.MouseLookX * _sensetivity;
-            _mouseLookY = _input.MouseLookY * _sensetivity;
+            //_mouseLookY = _input.MouseLookX * _sensetivity;
 
             MovementLogic(_moveForvard + _moveRight);
             PlayerLook();
@@ -59,11 +59,11 @@ namespace Model.ShootingGame
 
         private void PlayerLook()
         {
-            transform.Rotate(0, _mouseLookX, 0); // переделать позже - сначала поворачивается голова, на 45 градусах поворачивается тело
+            transform.Rotate(0, _mouseLookX, 0);
 
-            _xRotation += _mouseLookY;
-            _xRotation = Mathf.Clamp(_xRotation, -25f, 40f);
-            _head.transform.localRotation = Quaternion.Euler(0, 0, _xRotation);
+            //_xRotation += _mouseLookY; // пока что убрал движение головой, возможно понадобится в будущем.
+            //_xRotation = Mathf.Clamp(_xRotation, -25f, 40f);
+            //_head.transform.localRotation = Quaternion.Euler(0, 0, _xRotation);
         }
 
         private void ChangeInputType()
