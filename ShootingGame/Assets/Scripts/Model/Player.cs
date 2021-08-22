@@ -2,19 +2,35 @@ using PlayerInput.ShootingGame;
 
 namespace Model.ShootingGame
 {
+    using System.Collections;
     using UnityEngine;
-    public class Player : Unit
+
+    [System.Serializable]
+
+    public class Player : Unit, IDamageable
     {
+        private struct Inventory
+        {
+            [SerializeField] private int _key;
+
+            public int Key { get => _key; set => _key = value; }
+        }
+
+
         [SerializeField] private float _sensetivity;
+        [SerializeField] private Inventory _inventory;
 
         private float _mouseLookX;
         //private float _mouseLookY;
         //float _xRotation;
 
+
         private IInput _input;
         private Vector3 _moveForvard;
         private Vector3 _moveRight;
         private bool _isStandartInput = true;
+
+        public int MaxHP { get => _maxHP; }
 
 
         private void Awake()
@@ -78,6 +94,52 @@ namespace Model.ShootingGame
                 _input = GetComponent<StandartInput>();
                 _isStandartInput = true;
             }
+        }
+
+        public void TakeDamage(int damage)
+        {
+            Debug.Log("Auch!");
+        }
+
+        public void GetBuffOrDebuff(BuffsAndDebuffs bonusType, int value, int bonusTime)
+        {
+            switch (bonusType)
+            {
+                case BuffsAndDebuffs.Speed:
+                    _speed = _speed * value;
+                    Debug.Log(_speed);
+                    StartCoroutine(ReturnSpeedBack(bonusTime, value));
+                    break;
+                case BuffsAndDebuffs.Heal:
+                    break;
+                case BuffsAndDebuffs.Rage:
+                    break;
+                case BuffsAndDebuffs.Ammo:
+                    break;
+            }
+        }
+
+        private IEnumerator ReturnSpeedBack(int buffTime, int value)
+        {
+            int timeOut = 0;
+
+            while (timeOut != buffTime)
+            {
+                timeOut++;
+                if (timeOut == buffTime)
+                {
+                    _speed = _speed / value;
+                    Debug.Log(_speed);
+                }
+                yield return new WaitForSeconds(1f);
+            }
+        }
+
+        public void GetKey()
+        {
+            _inventory.Key++;
+
+            Debug.Log(_inventory.Key);
         }
     }
 }

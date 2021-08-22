@@ -1,0 +1,28 @@
+using UnityEngine;
+
+namespace Model.ShootingGame
+{
+    public class DeathMine : Mine
+    {
+        protected override void Undermining()
+        {
+
+            var colliders = Physics.OverlapSphere(transform.position, _radius);
+            foreach (var hit in colliders)
+            {
+                if (hit.gameObject.TryGetComponent<IDamageable>(out IDamageable target))
+                {
+                    int damage = target.MaxHP;
+                    target.TakeDamage(damage);
+                }
+            }
+
+            _particleObject.SetActive(true);
+            GetComponent<AudioSource>().Play();
+            Destroy(_mineBody);
+            _isBombed = true;
+            gameObject.GetComponent<BoxCollider>().enabled = false;
+            Destroy(gameObject, 5f);
+        }
+    }
+}
