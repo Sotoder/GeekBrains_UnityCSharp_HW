@@ -7,6 +7,5 @@ namespace PlayerInput.ShootingGame
         public bool IsFire { get; }
         public Vector3 Direction { get; }
         public float MouseLookX { get; }
-        //public float MouseLookY { get; }
     }
 }

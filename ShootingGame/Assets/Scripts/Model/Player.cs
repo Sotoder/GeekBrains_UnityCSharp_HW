@@ -1,14 +1,13 @@
-using PlayerInput.ShootingGame;
+п»їusing PlayerInput.ShootingGame;
 
 namespace Model.ShootingGame
 {
     using System.Collections;
     using UnityEngine;
 
-    [System.Serializable]
-
     public class Player : Unit, IDamageable
     {
+        [System.Serializable]
         private struct Inventory
         {
             [SerializeField] private int _key;
@@ -16,29 +15,28 @@ namespace Model.ShootingGame
             public int Key { get => _key; set => _key = value; }
         }
 
-
-        [SerializeField] private float _sensetivity;
         [SerializeField] private Inventory _inventory;
-
-        private float _mouseLookX;
-        //private float _mouseLookY;
-        //float _xRotation;
-
+        [SerializeField] private float _sensetivity = 20f;
+        [SerializeField] private Transform _camRotationTarget;
 
         private IInput _input;
         private Vector3 _moveForvard;
         private Vector3 _moveRight;
         private bool _isStandartInput = true;
+        private float _mouseLookX;
+        private bool _isStay = true;
 
         public int MaxHP { get => _maxHP; }
+        public bool IsStay { get => _isStay; }
+        public IInput CurrentInput { get => _input; }
 
 
         private void Awake()
         {
             _input = GetComponent<StandartInput>();
             _rb = GetComponent<Rigidbody>();
-
             Cursor.lockState = CursorLockMode.Locked;
+
         }
 
         private void Update()
@@ -56,14 +54,22 @@ namespace Model.ShootingGame
 
         private void FixedUpdate()
         {
-            _moveForvard = _input.Direction.x * _speed * transform.forward;
-            _moveRight = _input.Direction.z * _speed * transform.right;
 
-            _mouseLookX = _input.MouseLookX * _sensetivity;
-            //_mouseLookY = _input.MouseLookX * _sensetivity;
+            if (_input.Direction.x != 0 || _input.Direction.z != 0)
+            {
+                _moveForvard = _input.Direction.x * _speed * transform.forward;
+                _moveRight = _input.Direction.z * _speed * transform.right;
+                MovementLogic(_moveForvard + _moveRight);
+                _isStay = false;
+            }
+            else _isStay = true;         
 
-            MovementLogic(_moveForvard + _moveRight);
-            PlayerLook();
+            if (!_isStay)
+            {
+                _mouseLookX = _input.MouseLookX * _sensetivity;
+                PlayerLook();
+            }
+
         }
 
         private void MovementLogic(Vector3 moveVector)
@@ -76,10 +82,6 @@ namespace Model.ShootingGame
         private void PlayerLook()
         {
             transform.Rotate(0, _mouseLookX, 0);
-
-            //_xRotation += _mouseLookY; // пока что убрал движение головой, возможно понадобится в будущем.
-            //_xRotation = Mathf.Clamp(_xRotation, -25f, 40f);
-            //_head.transform.localRotation = Quaternion.Euler(0, 0, _xRotation);
         }
 
         private void ChangeInputType()

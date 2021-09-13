@@ -6,7 +6,6 @@ namespace PlayerInput.ShootingGame
         public bool IsFire { get => _isFire; }
         public Vector3 Direction { get => _direction; }
         public float MouseLookX { get => mouseLookX; }
-        //public float MouseLookY { get => mouseLookY; }
 
         protected override void OpenFire()
         {
