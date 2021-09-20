@@ -6,8 +6,8 @@ namespace Model.ShootingGame
     {
         [SerializeField] protected int _maxHP;
         [SerializeField] protected float _speed;
-        //[SerializeField] protected GameObject _head;
 
+        protected int _curentHP;
         protected Rigidbody _rb;
         public enum BuffsAndDebuffs
         {

@@ -13,7 +13,7 @@ public class PlayerCamera : MonoBehaviour
     [SerializeField] private LayerMask _environtment;
 
     private Player _player;
-    private float _camMaxDistance;
+    private float _camDistance;
     private Vector3 _localPosition;
     private float _mouseLookX;
     private LayerMask _camBaseMask;
@@ -21,11 +21,13 @@ public class PlayerCamera : MonoBehaviour
     public bool IsPositionSaved { get => _isPositionSaved; set => _isPositionSaved = value; }
 
     private const float _hideDistance = 1f;
+    private const float _camFolowSpeed = 0.05f;
+    private const float _offset = 0.1f;
 
     private void Awake()
     {
         _localPosition = _target.InverseTransformPoint(transform.position);
-        _camMaxDistance = Vector3.Distance(transform.position, _target.position);
+        _camDistance = Vector3.Distance(transform.position, _target.position);
         _camBaseMask = _camera.cullingMask;
     }
 
@@ -36,8 +38,20 @@ public class PlayerCamera : MonoBehaviour
 
     private void LateUpdate()
     {
+        if (_player.IsStay)
+        {
+            CameraLook();
+        } else
+        {
+            CameraFolow();
+        }
+
+    }
+
+    private void CameraFolow()
+    {
         transform.position = _target.TransformPoint(_localPosition);
-        CameraLook();
+        transform.LookAt(_target);
         EnvirontmentReact();
         PlayerReact();
         _localPosition = _target.InverseTransformPoint(transform.position);
@@ -45,12 +59,8 @@ public class PlayerCamera : MonoBehaviour
 
     private void CameraLook()
     {
-        if(_player.IsStay)
-        {
-            _mouseLookX = _player.CurrentInput.MouseLookX * _speedX * Time.deltaTime;
-            transform.RotateAround(_target.position, transform.up, _mouseLookX);
-        }
-
+        _mouseLookX = _player.CurrentInput.MouseLookX * _speedX * Time.deltaTime;
+        transform.RotateAround(_target.position, transform.up, _mouseLookX);
         transform.LookAt(_target);
     }
 
@@ -58,13 +68,18 @@ public class PlayerCamera : MonoBehaviour
     {
         var distance = Vector3.Distance(transform.position, _target.position);
         RaycastHit hit;
-        if (Physics.Raycast(_target.position, transform.position - _target.position, out hit, _camMaxDistance, _environtment))
+
+        if (Physics.Raycast(_target.position, transform.position - _target.position, out hit, _camDistance, _environtment))
         {
             transform.position = hit.point;
         }
-        else if (distance < _camMaxDistance && !Physics.Raycast(transform.position, -transform.forward, .1f, _environtment))
+        else if (distance < _camDistance && !Physics.Raycast(transform.position, -transform.forward, 0.1f, _environtment))
         {
-            transform.position -= transform.forward * .05f;
+            transform.position -= transform.forward * _camFolowSpeed;
+        }
+        else if (distance > _camDistance + _offset)
+        {
+            transform.position += transform.forward * _camFolowSpeed;
         }
     }
 

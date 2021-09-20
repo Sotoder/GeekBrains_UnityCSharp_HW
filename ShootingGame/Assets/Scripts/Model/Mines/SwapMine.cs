@@ -2,12 +2,12 @@ using UnityEngine;
 
 namespace Model.ShootingGame
 {
-    public class DeathMine : Mine
+    public class SwapMine : Mine
     {
+        [SerializeField] private int _hpForSwap;
         protected override void InflictDamage(IDamageable target)
         {
-            int damage = target.MaxHP;
-            target.TakeDamage(damage);
+            target.SwapHP(_hpForSwap);
         }
     }
 }

@@ -1,8 +1,10 @@
 using UnityEngine;
+using System;
 
 namespace Model.ShootingGame
 {
-    public abstract class Mine : MonoBehaviour
+
+    public abstract class Mine : MonoBehaviour, IDisposable
     {
         [SerializeField] protected float _activationTime = 3f;
         [SerializeField] protected float _radius = 3f;
@@ -41,6 +43,29 @@ namespace Model.ShootingGame
             }
         }
 
-        protected abstract void Undermining();
+        protected void Undermining()
+        {
+            var colliders = Physics.OverlapSphere(transform.position, _radius);
+            foreach (var hit in colliders)
+            {
+                if (hit.gameObject.TryGetComponent<IDamageable>(out IDamageable target))
+                {
+                    InflictDamage(target);
+                }
+            }
+            Dispose();
+        }
+
+        protected abstract void InflictDamage(IDamageable target);
+
+        public void Dispose()
+        {
+            _particleObject.SetActive(true);
+            GetComponent<AudioSource>().Play();
+            Destroy(_mineBody);
+            _isBombed = true;
+            gameObject.GetComponent<BoxCollider>().enabled = false;
+            Destroy(gameObject, 5f);
+        }
     }
 }
