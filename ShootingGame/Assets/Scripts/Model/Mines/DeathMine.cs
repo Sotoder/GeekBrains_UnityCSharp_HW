@@ -4,10 +4,10 @@ namespace Model.ShootingGame
 {
     public class DeathMine : Mine
     {
-        protected override void InflictDamage(IDamageable target)
+        protected override (DamagingMethods damagingMethod, int damage) InflictDamage(IDamageable target)
         {
             int damage = target.MaxHP;
-            target.TakeDamage(damage);
+            return (target.TakeDamage, damage);
         }
     }
 }

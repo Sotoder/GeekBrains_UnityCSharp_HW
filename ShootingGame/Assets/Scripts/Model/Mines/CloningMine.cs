@@ -38,9 +38,6 @@ namespace Model.ShootingGame
             return Instantiate(this, spawnPoint, transform.rotation);
         }
 
-        protected override void InflictDamage(IDamageable target)
-        {
-            target.TakeDamage(_damage);
-        }
+        protected override (DamagingMethods damagingMethod, int damage) InflictDamage(IDamageable target) => (target.TakeDamage, _damage);
     }
 }

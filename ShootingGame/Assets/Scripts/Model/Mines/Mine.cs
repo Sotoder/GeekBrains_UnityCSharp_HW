@@ -6,6 +6,8 @@ namespace Model.ShootingGame
 
     public abstract class Mine : MonoBehaviour, IDisposable
     {
+        protected delegate void DamagingMethods(int damage);
+
         [SerializeField] protected float _activationTime = 3f;
         [SerializeField] protected float _radius = 3f;
         [SerializeField] protected GameObject _particleObject;
@@ -50,13 +52,19 @@ namespace Model.ShootingGame
             {
                 if (hit.gameObject.TryGetComponent<IDamageable>(out IDamageable target))
                 {
-                    InflictDamage(target);
+                    var (damagingMethod, damage) = InflictDamage(target);
+                    CallDamage(damagingMethod, damage);
                 }
             }
             Dispose();
         }
 
-        protected abstract void InflictDamage(IDamageable target);
+        protected abstract (DamagingMethods damagingMethod, int damage) InflictDamage(IDamageable target);
+
+        protected void CallDamage(DamagingMethods damagingMethod, int damage)
+        {
+            damagingMethod(damage);
+        }
 
         public void Dispose()
         {
