@@ -10,13 +10,14 @@ namespace Model.ShootingGame
         [SerializeField] protected float _radius = 3f;
         [SerializeField] protected GameObject _particleObject;
         [SerializeField] protected GameObject _mineBody;
+
         protected bool _isBombed = false;
         protected float _stayTime = 0f;
 
         protected void OnTriggerStay(Collider other)
         {
             if (_isBombed) return;
-            if (other.tag.Equals("Player") || other.tag.Equals("Enemy"))
+            if (other.gameObject.TryGetComponent<IDamageable>(out IDamageable target))
             {
 
                 _stayTime += Time.deltaTime;
@@ -37,7 +38,7 @@ namespace Model.ShootingGame
 
         protected void OnCollisionEnter(Collision collision)
         {
-            if (collision.gameObject.tag.Equals("Player") || collision.gameObject.tag.Equals("Enemy"))
+            if (collision.gameObject.TryGetComponent<IDamageable>(out IDamageable target))
             {
                 Undermining();
             }

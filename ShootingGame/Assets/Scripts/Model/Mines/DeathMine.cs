@@ -1,4 +1,3 @@
-using UnityEngine;
 
 namespace Model.ShootingGame
 {

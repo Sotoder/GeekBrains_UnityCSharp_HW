@@ -1,9 +1,9 @@
 using UnityEngine;
-using PlayerInput.ShootingGame;
+using System.Collections;
 using Model.ShootingGame;
 using System;
 
-public class PlayerCamera : MonoBehaviour
+public class PlayerCamera : MonoBehaviour, IDisposable
 {
     [SerializeField] private Camera _camera;
     [SerializeField] private Transform _target;
@@ -17,12 +17,14 @@ public class PlayerCamera : MonoBehaviour
     private Vector3 _localPosition;
     private float _mouseLookX;
     private LayerMask _camBaseMask;
-    private bool _isPositionSaved;
-    public bool IsPositionSaved { get => _isPositionSaved; set => _isPositionSaved = value; }
+    private float _stayTime;
+    private bool _isCameraRotated;
 
-    private const float _hideDistance = 1f;
-    private const float _camFolowSpeed = 0.05f;
-    private const float _offset = 0.1f;
+    private const float HIDE_DISTANSE = 1f;
+    private const float CAMERA_FOLLOW_SPEED = 0.05f;
+    private const float OFFSET = 0.1f;
+    private const float MOTION_WAITING_TIME = 1f;
+    private const float CAMERA_LERP_SPEED = 5f;
 
     private void Awake()
     {
@@ -34,11 +36,12 @@ public class PlayerCamera : MonoBehaviour
     private void Start()
     {
         _player = _playerObject.GetComponent<Player>();
+        _player.takeDamage += CameraShake;
     }
 
     private void LateUpdate()
     {
-        if (_player.IsStay)
+        if (_player.IsStay && _player.CurrentInput.IsCameraRotate)
         {
             CameraLook();
         } else
@@ -50,18 +53,78 @@ public class PlayerCamera : MonoBehaviour
 
     private void CameraFolow()
     {
-        transform.position = _target.TransformPoint(_localPosition);
-        transform.LookAt(_target);
-        EnvirontmentReact();
-        PlayerReact();
-        _localPosition = _target.InverseTransformPoint(transform.position);
+        if (_player.IsStay && _isCameraRotated)
+        {
+            CameraLerp();
+            EnvirontmentReact();
+            PlayerReact();
+
+        }
+        else
+        {
+            transform.position = _target.TransformPoint(_localPosition);
+            transform.LookAt(_target);
+            EnvirontmentReact();
+            PlayerReact();
+            _localPosition = _target.InverseTransformPoint(transform.position);
+        }
     }
 
     private void CameraLook()
     {
-        _mouseLookX = _player.CurrentInput.MouseLookX * _speedX * Time.deltaTime;
-        transform.RotateAround(_target.position, transform.up, _mouseLookX);
+        if(_player.CurrentInput.MouseLookX != 0)
+        {
+            _stayTime = 0f;
+            _mouseLookX = _player.CurrentInput.MouseLookX * _speedX * Time.deltaTime;
+            transform.RotateAround(_target.position, transform.up, _mouseLookX);
+            transform.LookAt(_target);
+            _isCameraRotated = true;
+        } else
+        {
+            _stayTime += Time.deltaTime;
+
+            if (_stayTime >= MOTION_WAITING_TIME)
+            {
+                CameraLerp();
+            }
+        }
+
+    }
+
+    private void CameraLerp()
+    {
+        transform.position = Vector3.Lerp(transform.position, _target.TransformPoint(_localPosition), CAMERA_LERP_SPEED * Time.deltaTime);
         transform.LookAt(_target);
+        StartCoroutine(ChangeCameraRotatedStatus());
+    }
+
+    private void CameraShake(int damage)
+    {
+        if (damage > _player.Parameters.CurrentHP * 0.5f) 
+        {
+            Debug.Log("Shaking Camera Hard");
+        } else
+        {
+            Debug.Log("Shaking Camera Easy");
+        }
+        
+    }
+
+    private IEnumerator ChangeCameraRotatedStatus()
+    {
+        float CoroutineWaitTime = 1.5f;
+        float timeOut = 0;
+
+        while (timeOut != CoroutineWaitTime)
+        {
+            timeOut+=0.5f;
+            if (timeOut == CoroutineWaitTime)
+            {
+                _stayTime = 0f;
+                _isCameraRotated = false;
+            }
+            yield return new WaitForSeconds(0.5f);
+        }
     }
 
     void EnvirontmentReact()
@@ -75,20 +138,25 @@ public class PlayerCamera : MonoBehaviour
         }
         else if (distance < _camDistance && !Physics.Raycast(transform.position, -transform.forward, 0.1f, _environtment))
         {
-            transform.position -= transform.forward * _camFolowSpeed;
+            transform.position -= transform.forward * CAMERA_FOLLOW_SPEED;
         }
-        else if (distance > _camDistance + _offset)
+        else if (distance > _camDistance + OFFSET)
         {
-            transform.position += transform.forward * _camFolowSpeed;
+            transform.position += transform.forward * CAMERA_FOLLOW_SPEED;
         }
     }
 
     void PlayerReact()
     {
         var distance = Vector3.Distance(transform.position, _target.position);
-        if (distance < _hideDistance)
+        if (distance < HIDE_DISTANSE)
             _camera.cullingMask = _noPlayer;
         else
             _camera.cullingMask = _camBaseMask;
+    }
+
+    public void Dispose()
+    {
+        _player.takeDamage -= CameraShake;
     }
 }

@@ -16,7 +16,7 @@ namespace Model.ShootingGame
 
         protected new void OnCollisionEnter(Collision collision)
         {
-            if (collision.gameObject.tag.Equals("Player") || collision.gameObject.tag.Equals("Enemy"))
+            if (collision.gameObject.TryGetComponent<IDamageable>(out IDamageable target))
             {
                 Clone();
             }

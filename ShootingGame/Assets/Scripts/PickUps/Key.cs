@@ -6,9 +6,9 @@ namespace Model.ShootingGame
     {
         protected override void OnTriggerEnter(Collider other)
         {
-            if (other.CompareTag("Player"))
+            if (other.TryGetComponent<Player>(out Player player))
             {
-                other.GetComponent<Player>().GetKey();
+                player.GetKey();
                 Destroy(gameObject);
             }
         }

@@ -1,66 +1,78 @@
 ﻿using PlayerInput.ShootingGame;
+using System.Collections;
+using UnityEngine;
+using UnityEngine.Events;
+using static UnityEngine.Debug;
 
 namespace Model.ShootingGame
 {
-    using System.Collections;
-    using UnityEngine;
-    using static UnityEngine.Debug;
-
     public class Player : Unit, IDamageable
     {
-        [System.Serializable]
-        private struct Inventory
-        {
-            [SerializeField] private int _key;
+        public UnityAction<int> takeDamage;
+        public UnityAction<int> swapHP;
+        public UnityAction getKey;
 
-            public int Key { get => _key; set => _key = value; }
-        }
-
-        [System.Serializable]
-        public struct Arsenal
-        {
-            public string name;
-            public GameObject rightGun;
-            public RuntimeAnimatorController controller;
-        }
-
-        [SerializeField] private Inventory _inventory;
+        [SerializeField] private Keystorege _keystorege;
         [SerializeField] private float _sensetivity = 20f;
         [SerializeField] private Transform rightGunBone;
+        [SerializeField] private int _maxHP;
+        [SerializeField] private int _maxStamina;
 
         private IInput _input;
         private Vector3 _moveForvard;
         private Vector3 _moveRight;
-        private bool _isStandartInput = true;
         private float _mouseLookX;
         private bool _isStay = true;
         public Arsenal[] _arsenal;
         private Animator _animator;
 
-        public int MaxHP { get => _maxHP; }
-        public int CurentHP { get => _curentHP; }
         public bool IsStay { get => _isStay; }
         public IInput CurrentInput { get => _input; }
+
+        public Parameters Parameters { get => _parameters; }
+        public int MaxHP { get => _maxHP; }
+        public int MaxStamina { get => _maxStamina; }
+
+        //private const int DEFAULT_HP = 100;
+        //private const int DEFAULT_STAMINA = 100;
 
 
         private void Awake()
         {
-            _input = GetComponent<StandartInput>();
+            //try // Ну вот просто за ради играний с обработкой эксепшена написано, а так знаю что атата, лид не разрешал!
+            //{
+            //    if (_maxHP < 0) throw new ParameterException("Некорректно указано здоровье персонажа", _maxHP);
+            //    Debug.Log("ok");
+            //}
+            //catch (ParameterException e)
+            //{
+            //    Debug.LogWarning($"{e.Message} {e.Parameter}");
+            //    Debug.LogWarning($"Здоровье будет установлено по умолчанию {DefaultHP}");
+            //}
+            //finally
+            //{
+            //    _maxHP = DefaultHP;
+            //}
+
+            if (_maxHP < 0) throw new PlayerHPExeption("Некорректно указано здоровье персонажа", _maxHP);
+
+
+            _input = GetComponent<BaseInput>();
             _animator = GetComponent<Animator>();
             _rb = GetComponent<Rigidbody>();
+
+            _keystorege = new Keystorege(this);
+            _parameters = new Parameters(this, _maxHP, _maxStamina);
+
             Cursor.lockState = CursorLockMode.Locked;
 
             if (_arsenal.Length > 0)
                 SetArsenal(_arsenal[0].name);
-            _curentHP = _maxHP;
-    }
+
+        }
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.P))
-            {
-                ChangeInputType();
-            }
 
             if (_input.IsFire)
             {
@@ -80,7 +92,7 @@ namespace Model.ShootingGame
             }
             else _isStay = true;         
 
-            if (!_isStay)
+            if (!_input.IsCameraRotate)
             {
                 _mouseLookX = _input.MouseLookX * _sensetivity;
                 PlayerLook();
@@ -100,31 +112,15 @@ namespace Model.ShootingGame
             transform.Rotate(0, _mouseLookX, 0);
         }
 
-        private void ChangeInputType()
-        {
-            if (_isStandartInput)
-            {
-                _input = GetComponent<AltInput>();
-                _isStandartInput = false;
-            }
-            else
-            {
-                _input = GetComponent<StandartInput>();
-                _isStandartInput = true;
-            }
-        }
-
         public void TakeDamage(int damage)
         {
             Log("Auch!");
+            takeDamage?.Invoke(damage);
         }
 
         public void SwapHP(int hpForSwap)
         {
-            _curentHP = _curentHP + hpForSwap;
-            hpForSwap = _curentHP - hpForSwap;
-            _curentHP = _curentHP - hpForSwap;
-            Log(_curentHP);
+            swapHP?.Invoke(hpForSwap);
         }
 
         public void GetBuffOrDebuff(BuffsAndDebuffs bonusType, int value, int bonusTime)
@@ -163,9 +159,8 @@ namespace Model.ShootingGame
 
         public void GetKey()
         {
-            _inventory.Key++;
-
-            Log(_inventory.Key);
+            getKey?.Invoke();
+            Log(_keystorege.Key);
         }
 
         public void SetArsenal(string name)
