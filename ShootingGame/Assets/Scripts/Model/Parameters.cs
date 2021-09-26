@@ -1,9 +1,10 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Model.ShootingGame
 {
     [System.Serializable]
-    public class Parameters
+    public class Parameters : IDisposable
     {
         [SerializeField] private int _currentHP;
         [SerializeField] private int _currentStamina;
@@ -30,6 +31,11 @@ namespace Model.ShootingGame
         public void SwapHP(int hp)
         {
             _currentHP = hp;
+        }
+        public void Dispose()
+        {
+            _player.takeDamage -= GetDamage;
+            _player.swapHP -= SwapHP;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using PlayerInput.ShootingGame;
+using UI.ShootingGame;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
@@ -18,7 +19,7 @@ namespace Model.ShootingGame
         [SerializeField] private int _maxHP;
         [SerializeField] private int _maxStamina;
 
-        private IInput _input;
+        private BaseInput _input;
         private Vector3 _moveForvard;
         private Vector3 _moveRight;
         private float _mouseLookX;
@@ -27,11 +28,12 @@ namespace Model.ShootingGame
         private Animator _animator;
 
         public bool IsStay { get => _isStay; }
-        public IInput CurrentInput { get => _input; }
+        public BaseInput CurrentInput { get => _input; }
 
         public Parameters Parameters { get => _parameters; }
         public int MaxHP { get => _maxHP; }
         public int MaxStamina { get => _maxStamina; }
+        public Keystorege Keystorege { get => _keystorege; }
 
         //private const int DEFAULT_HP = 100;
         //private const int DEFAULT_STAMINA = 100;
