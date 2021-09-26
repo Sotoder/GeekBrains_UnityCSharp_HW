@@ -3,6 +3,7 @@ using PlayerInput.ShootingGame;
 using Model.ShootingGame;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System;
 
 namespace UI.ShootingGame {
 
@@ -10,9 +11,12 @@ namespace UI.ShootingGame {
     {
         [SerializeField] private Player _player;
         [SerializeField] GameObject _pauseMenuPanel;
+        [SerializeField] GameObject _endMenuPanel;
         [SerializeField] Button _pauseMenuButtonResume;
         [SerializeField] Button _pauseMenuButtonRestart;
         [SerializeField] Button _pauseMenuButtonExit;
+        [SerializeField] Button _endMenuButtonRestart;
+        [SerializeField] Button _endMenuButtonExit;
 
         private BaseInput _baseInput;
 
@@ -21,12 +25,22 @@ namespace UI.ShootingGame {
             _pauseMenuButtonResume.onClick.AddListener(ResumeGame);
             _pauseMenuButtonRestart.onClick.AddListener(RestartGame);
             _pauseMenuButtonExit.onClick.AddListener(ExitGame);
+            _endMenuButtonRestart.onClick.AddListener(RestartGame);
+            _endMenuButtonExit.onClick.AddListener(ExitGame);
         }
 
         private void Start()
         {
             _baseInput = _player.CurrentInput;
             _baseInput.pressGameMenuKey += ShowPauseMenu;
+            _player.Keystorege.allKeysCollected += ShowEndGameMenu;
+        }
+
+        private void ShowEndGameMenu()
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Time.timeScale = 0;
+            _endMenuPanel.SetActive(true);
         }
 
         private void ShowPauseMenu()
@@ -64,6 +78,8 @@ namespace UI.ShootingGame {
             _pauseMenuButtonResume.onClick.RemoveListener(ResumeGame);
             _pauseMenuButtonRestart.onClick.RemoveListener(RestartGame);
             _pauseMenuButtonExit.onClick.RemoveListener(ExitGame);
+            _endMenuButtonRestart.onClick.RemoveListener(RestartGame);
+            _endMenuButtonExit.onClick.RemoveListener(ExitGame);
         }
     }
 }

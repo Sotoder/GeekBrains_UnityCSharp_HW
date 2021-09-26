@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using UnityEngine.Events;
 
 namespace Model.ShootingGame
 {
@@ -7,6 +8,8 @@ namespace Model.ShootingGame
     [System.Serializable]
     public class Keystorege: IDisposable
     {
+        public UnityAction allKeysCollected;
+
         [SerializeField] private int _key;
         private Player _player;
 
@@ -21,7 +24,14 @@ namespace Model.ShootingGame
 
         public void AddKey()
         {
-            _key++;
+            if (_key < 4)
+            {
+                _key++;
+            } else
+            {
+                allKeysCollected?.Invoke();
+            }
+
         }
 
         public void Dispose()
