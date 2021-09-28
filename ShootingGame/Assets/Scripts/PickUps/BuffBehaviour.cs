@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.Events;
 
 namespace Model.ShootingGame {
-    public class BuffBehaviour : MonoBehaviour, IRotate, IBuff
+    public sealed class BuffBehaviour : MonoBehaviour, IRotate, IBuff
     {
         public UnityAction<BuffBehaviour, BuffData> buffCollected;
 
@@ -14,7 +14,7 @@ namespace Model.ShootingGame {
 
         public BuffData BuffData => _buffData;
 
-        protected void Awake()
+        private void Awake()
         {
             var pathsCollection = new BuffPrefabPath();
             var prefabPath = pathsCollection.prefabsPaths[_buffData.buffStructure.BuffType];

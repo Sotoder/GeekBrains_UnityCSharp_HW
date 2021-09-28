@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Model.ShootingGame
 {
-    public class SpeedBonus : PickUps
+    public sealed class SpeedBonus : PickUps
     {
         [SerializeField] private int _bonusValue;
 

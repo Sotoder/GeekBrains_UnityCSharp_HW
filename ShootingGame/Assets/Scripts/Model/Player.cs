@@ -7,7 +7,7 @@ using static UnityEngine.Debug;
 
 namespace Model.ShootingGame
 {
-    public class Player : Unit, IDamageable
+    public sealed class Player : Unit, IDamageable
     {
         public UnityAction<int> takeDamage;
         public UnityAction<int> swapHP;

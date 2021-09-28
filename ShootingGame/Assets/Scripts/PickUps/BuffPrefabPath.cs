@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Model.ShootingGame
 {
     [Serializable]
-    public class BuffPrefabPath
+    public sealed class BuffPrefabPath
     {
         public readonly Dictionary<BuffTypes, string> prefabsPaths = new Dictionary<BuffTypes, string>
         {
