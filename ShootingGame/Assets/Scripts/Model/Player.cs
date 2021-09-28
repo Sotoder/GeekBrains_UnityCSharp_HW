@@ -125,20 +125,20 @@ namespace Model.ShootingGame
             swapHP?.Invoke(hpForSwap);
         }
 
-        public void GetBuffOrDebuff(BuffsAndDebuffs bonusType, int value, int bonusTime)
+        public void GetBuffOrDebuff(BuffTypes bonusType, int value, int bonusTime)
         {
             switch (bonusType)
             {
-                case BuffsAndDebuffs.Speed:
+                case BuffTypes.Speed:
                     _speed = _speed * value;
                     Log(_speed);
                     StartCoroutine(ReturnSpeedBack(bonusTime, value));
                     break;
-                case BuffsAndDebuffs.Heal:
+                case BuffTypes.Regeneration:
                     break;
-                case BuffsAndDebuffs.Rage:
+                case BuffTypes.Rage:
                     break;
-                case BuffsAndDebuffs.Ammo:
+                case BuffTypes.AttackSpeed:
                     break;
             }
         }

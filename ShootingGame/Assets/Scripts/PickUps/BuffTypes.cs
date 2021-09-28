@@ -1,10 +1,10 @@
 namespace Model.ShootingGame
 {
-    public enum BuffsAndDebuffs
+    public enum BuffTypes
     {
         Speed = 1,
-        Heal = 2,
+        Regeneration = 2,
         Rage = 3,
-        Ammo = 4
+        AttackSpeed = 4
     }
 }

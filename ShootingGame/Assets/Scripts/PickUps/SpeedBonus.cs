@@ -10,7 +10,7 @@ namespace Model.ShootingGame
         {
             if (other.TryGetComponent<Player>(out Player player))
             {
-                player.GetBuffOrDebuff(BuffsAndDebuffs.Speed, _bonusValue, 3);
+                player.GetBuffOrDebuff(BuffTypes.Speed, _bonusValue, 3);
                 Destroy(gameObject);
             }
         }
