@@ -1,6 +1,6 @@
 ﻿namespace Model.ShootingGame
 {
-    public interface IRotate
+    public interface IRotateble
     {
         void RotateBuff();
     }

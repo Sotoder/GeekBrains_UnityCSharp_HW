@@ -8,11 +8,11 @@ namespace Model.ShootingGame
 
         protected override void OnTriggerEnter(Collider other)
         {
-            if (other.TryGetComponent<Player>(out Player player))
-            {
-                player.GetBuffOrDebuff(BuffTypes.Speed, _bonusValue, 3);
-                Destroy(gameObject);
-            }
+            //if (other.TryGetComponent<Player>(out Player player))
+            //{
+            //    player.GetBuffOrDebuff(BuffTypes.Speed, _bonusValue, 3);
+            //    Destroy(gameObject);
+            //}
         }
     }
 }

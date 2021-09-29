@@ -9,11 +9,13 @@ namespace Model.ShootingGame
         [SerializeField] private int _currentHP;
         [SerializeField] private int _currentStamina;
 
+        public int speed;
+
         private Player _player;
 
         public int CurrentHP { get => _currentHP; }
 
-        public Parameters(Player player, int maxHP, int maxStamina)
+        public Parameters(Player player, int maxHP, int maxStamina, int speed)
         {
             _player = player;
             _player.takeDamage += GetDamage;
@@ -21,6 +23,7 @@ namespace Model.ShootingGame
 
             _currentHP = maxHP;
             _currentStamina = maxStamina;
+            this.speed = speed;
         }
 
         public void GetDamage(int damage)
@@ -32,6 +35,7 @@ namespace Model.ShootingGame
         {
             _currentHP = hp;
         }
+
         public void Dispose()
         {
             _player.takeDamage -= GetDamage;

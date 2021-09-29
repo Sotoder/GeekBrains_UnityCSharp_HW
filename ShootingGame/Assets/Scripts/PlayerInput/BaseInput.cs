@@ -24,7 +24,7 @@ namespace PlayerInput.ShootingGame
         private const string CANCEL = "Cancel";
         private const string CAMERA_ROTATE = "CameraRotate";
 
-        private void FixedUpdate()
+        private void Update()
         {
             _direction.z = Input.GetAxis(HORIZONTAL);
             _direction.x = Input.GetAxis(VERTICAL);

@@ -8,10 +8,10 @@ namespace Model.ShootingGame
     {
         public readonly Dictionary<BuffTypes, string> prefabsPaths = new Dictionary<BuffTypes, string>
         {
-            [BuffTypes.Speed] = "Prefabs/Buffs/Speed.prefab",
-            [BuffTypes.Regeneration] = "Prefabs/Buffs/Regeneration.prefab",
-            [BuffTypes.Rage] = "Prefabs/Buffs/Rage.prefab",
-            [BuffTypes.Regeneration] = "Prefabs/Buffs/AttackSpeed.prefab"
+            [BuffTypes.Speed] = "Prefabs/Buffs/Speed",
+            [BuffTypes.Regeneration] = "Prefabs/Buffs/Regeneration",
+            [BuffTypes.Rage] = "Prefabs/Buffs/Rage",
+            [BuffTypes.Regeneration] = "Prefabs/Buffs/AttackSpeed"
         };
     }
 }

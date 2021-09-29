@@ -64,7 +64,7 @@ namespace Model.ShootingGame
             _rb = GetComponent<Rigidbody>();
 
             _keystorege = new Keystorege(this);
-            _parameters = new Parameters(this, _maxHP, _maxStamina);
+            _parameters = new Parameters(this, _maxHP, _maxStamina, _speedForInitialization);
 
             Cursor.lockState = CursorLockMode.Locked;
 
@@ -87,8 +87,8 @@ namespace Model.ShootingGame
 
             if (_input.Direction.x != 0 || _input.Direction.z != 0)
             {
-                _moveForvard = _input.Direction.x * _speed * transform.forward;
-                _moveRight = _input.Direction.z * _speed * transform.right;
+                _moveForvard = _input.Direction.x * _parameters.speed * transform.forward;
+                _moveRight = _input.Direction.z * _parameters.speed * transform.right;
                 MovementLogic(_moveForvard + _moveRight);
                 _isStay = false;
             }
@@ -123,40 +123,6 @@ namespace Model.ShootingGame
         public void SwapHP(int hpForSwap)
         {
             swapHP?.Invoke(hpForSwap);
-        }
-
-        public void GetBuffOrDebuff(BuffTypes bonusType, int value, int bonusTime)
-        {
-            switch (bonusType)
-            {
-                case BuffTypes.Speed:
-                    _speed = _speed * value;
-                    Log(_speed);
-                    StartCoroutine(ReturnSpeedBack(bonusTime, value));
-                    break;
-                case BuffTypes.Regeneration:
-                    break;
-                case BuffTypes.Rage:
-                    break;
-                case BuffTypes.AttackSpeed:
-                    break;
-            }
-        }
-
-        private IEnumerator ReturnSpeedBack(int buffTime, int value)
-        {
-            int timeOut = 0;
-
-            while (timeOut != buffTime)
-            {
-                timeOut++;
-                if (timeOut == buffTime)
-                {
-                    _speed = _speed / value;
-                    Log(_speed);
-                }
-                yield return new WaitForSeconds(1f);
-            }
         }
 
         public void GetKey()
