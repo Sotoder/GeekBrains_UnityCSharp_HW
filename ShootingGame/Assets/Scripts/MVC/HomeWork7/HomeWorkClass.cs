@@ -69,6 +69,8 @@ namespace Model.ShootingGame
 
             Debug.Log(listInfo.Item2);
             Debug.Log($"Уникальных элементов: {strList.Count - listInfo.Item1}.\nПовторяющих элементов: {listInfo.Item1}");
+
+            Debug.Log(intArray.DuplicateValuesLinq());
         }
 
         private void Task4a()
