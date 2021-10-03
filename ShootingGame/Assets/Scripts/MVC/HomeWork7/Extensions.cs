@@ -79,13 +79,13 @@ static public class Extensions
         //var groupList = from element in self
         //                group self by element into g
         //                orderby g.Key ascending
-        //                select g;
+        //                select new { g.Key, DuplicateCount = g.Count() };
 
-        var groupList = self.GroupBy(element => element).OrderBy(g => g.Key);
+        var groupList = self.GroupBy(element => element).Select(s => new {s.Key, DuplicateCount = s.Count()}).OrderBy(g => g.Key);
 
         foreach (var element in groupList)
         {
-            strResult += $"Значение: {element.Key}, вхождений: {element.Count()}\n";
+            strResult += $"Значение: {element.Key}, вхождений: {element.DuplicateCount}\n";
         }
 
         return strResult;
