@@ -6,7 +6,7 @@ namespace Model.ShootingGame
 {
     public class ControllersInitializator
     {
-        public ControllersInitializator(Player player, BuffBehaviour[] buffObjects)
+        public ControllersInitializator(Player player, IBuff[] buffObjects)
         {
             new BuffController(player.Parameters, buffObjects);
         }

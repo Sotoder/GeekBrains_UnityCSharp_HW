@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Model.ShootingGame
@@ -11,8 +9,10 @@ namespace Model.ShootingGame
 
         private void Start()
         {
-            var buffObjects = Object.FindObjectsOfType<BuffBehaviour>();
-            new ControllersInitializator(_player, buffObjects);
+            new HomeWorkClass(); //Запускаем ДЗ 7 урока
+
+            var iBuffObjects = Object.FindObjectsOfType<BuffBehaviour>() as IBuff[];
+            new ControllersInitializator(_player, iBuffObjects);
         }
     }
 }

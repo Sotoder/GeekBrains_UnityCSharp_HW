@@ -5,14 +5,16 @@ using UnityEngine.Events;
 namespace Model.ShootingGame {
     public sealed class BuffBehaviour : MonoBehaviour, IRotateble, IBuff, ITwitching
     {
-        public UnityAction<BuffData> buffCollected;
+        private UnityAction<BuffStructure> _buffCollected;
 
         [SerializeField] private BuffData _buffData;
 
         private float _baseY;
         private GameObject _buffObject;
 
-        public BuffData BuffData => _buffData;
+
+        public UnityAction<BuffStructure> BuffCollected { get => _buffCollected; set => _buffCollected = value; } // автосвойство, чтоб добавить экшен в интерфейс, как по другому?
+        public BuffStructure Buff => _buffData.BuffStruct;
 
         private const int Z_ANGLE = 1;
         private const float TWITCH_SPEED = 3f;
@@ -21,7 +23,7 @@ namespace Model.ShootingGame {
         private void Awake()
         {
             var pathsCollection = new BuffPrefabPath();
-            var prefabPath = pathsCollection.prefabsPaths[_buffData.buffStructure.BuffType];
+            var prefabPath = pathsCollection.prefabsPaths[Buff.BuffType];
             var buffPrefab = Resources.Load(prefabPath) as GameObject;
 
             _buffObject = Instantiate(buffPrefab, transform.position, new Quaternion(x: -0.7f, transform.rotation.y, transform.rotation.z, w: 0.7f));
@@ -50,7 +52,7 @@ namespace Model.ShootingGame {
         {
             if (other.TryGetComponent<Player>(out Player player))
             {
-                buffCollected?.Invoke(_buffData);
+                _buffCollected?.Invoke(Buff);
                 Destroy(gameObject);
             }
         }

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c7ebcbbd6329fd48b4968ff865f7c33, type: 3}
   m_Name: x2_Speed
   m_EditorClassIdentifier: 
-  buffStructure:
+  _buffStructure:
     _buffType: 1
     _buffValue: 2
     _buffDuration: 5

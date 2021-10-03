@@ -100,7 +100,7 @@ public class PlayerCamera : MonoBehaviour, IDisposable
 
     private void CameraShake(int damage)
     {
-        if (damage > _player.Parameters.CurrentHP * 0.5f) 
+        if (damage > _player.Parameters.currentHP * 0.5f) 
         {
             Debug.Log("Shaking Camera Hard");
         } else

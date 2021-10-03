@@ -11,7 +11,7 @@ namespace Model.ShootingGame
             [BuffTypes.Speed] = "Prefabs/Buffs/Speed",
             [BuffTypes.Regeneration] = "Prefabs/Buffs/Regeneration",
             [BuffTypes.Rage] = "Prefabs/Buffs/Rage",
-            [BuffTypes.Regeneration] = "Prefabs/Buffs/AttackSpeed"
+            [BuffTypes.Heal] = "Prefabs/Buffs/Heal"
         };
     }
 }

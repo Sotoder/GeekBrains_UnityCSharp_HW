@@ -6,6 +6,8 @@ namespace Model.ShootingGame
     [CreateAssetMenu(fileName = "BuffData", menuName = "Data/Buff")]
     public sealed class BuffData : ScriptableObject
     {
-        public BuffStructure buffStructure;
+        [SerializeField] private BuffStructure _buffStructure;
+
+        public BuffStructure BuffStruct { get => _buffStructure; }
     }
 }

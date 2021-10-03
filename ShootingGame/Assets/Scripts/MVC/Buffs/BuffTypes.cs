@@ -5,6 +5,6 @@ namespace Model.ShootingGame
         Speed = 1,
         Regeneration = 2,
         Rage = 3,
-        AttackSpeed = 4
+        Heal = 4
     }
 }

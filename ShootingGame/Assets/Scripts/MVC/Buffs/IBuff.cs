@@ -1,7 +1,13 @@
-﻿namespace Model.ShootingGame
+﻿
+
+using UnityEngine.Events;
+
+namespace Model.ShootingGame
 {
-    internal interface IBuff
+    public interface IBuff
     {
-        public BuffData BuffData { get; }
+        public UnityAction<BuffStructure> BuffCollected { get; set; }
+        public BuffStructure Buff { get; }
+
     }
 }

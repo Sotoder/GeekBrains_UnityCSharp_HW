@@ -6,13 +6,13 @@ namespace Model.ShootingGame
 {
     public sealed class BuffController
     {
-        private delegate void BuffMethod(BuffData buffData);
+        private delegate void BuffMethod(BuffStructure buff);
 
         private Parameters _playerParameters;
-        private BuffBehaviour[] _buffObjects;
+        private IBuff[] _buffObjects;
         private Dictionary<BuffTypes, BuffMethod> _buffMethods;
 
-        public BuffController(Parameters parameters, BuffBehaviour[] buffObjects)
+        public BuffController(Parameters parameters, IBuff[] buffObjects)
         {
             _playerParameters = parameters;
             _buffObjects = buffObjects;
@@ -21,70 +21,50 @@ namespace Model.ShootingGame
 
             _buffMethods = new Dictionary<BuffTypes, BuffMethod>
             {
-                [BuffTypes.Speed] = (buffData) =>   // јнонимный метод тут больше дл€ вопроса можно ли юзать именно анонимные или это не правильно, так как код становитс€ непон€тным? 
-                                                    // ѕро залипание помню, но тут вроде нет его. Ќормальный метод ChangeSpeed ниже.
-                                                    // ≈сли что все вопросы к —ергею, он говорил что это не страшно и вполне пон€тно))
-                {
-                    var buffStructure = buffData.buffStructure;
-                    var pastSpeed = _playerParameters.speed;
-                    _playerParameters.speed = _playerParameters.speed * buffStructure.BonusValue;
-                    BuffTimer timer = new BuffTimer(buffStructure.BonusDuration);
-                    timer.timeIsOver += () =>
-                    {
-                        _playerParameters.speed = _playerParameters.speed/buffStructure.BonusValue;
-                        timer.Dispose();
-
-                    };
-                },
-                [BuffTypes.Regeneration] = GetRegeneration,
-                [BuffTypes.Rage] = GetRage,
-                [BuffTypes.AttackSpeed] = ChangeAttackSpeed
+                [BuffTypes.Speed] = TemporaryBuff,
+                [BuffTypes.Regeneration] = TickBuff,
+                [BuffTypes.Rage] = TemporaryBuff,
+                [BuffTypes.Heal] = InstantBuff
             };
         }
 
-        private void SignOnBuffInstance(BuffBehaviour[] buffObjects)
+        private void SignOnBuffInstance(IBuff[] buffObjects)
         {
             if (_buffObjects.Length > 0)
             {
                 for (int i = 0; i < _buffObjects.Length; i++)
                 {
-                    _buffObjects[i].buffCollected += ApplyBaff;
+                    _buffObjects[i].BuffCollected += ApplyBaff;
                 }
             }
         }
 
-        private void ApplyBaff(BuffData buff)
+        private void ApplyBaff(BuffStructure buff)
         {
-            _buffMethods[buff.buffStructure.BuffType](buff);
+            _buffMethods[buff.BuffType](buff);
         }
 
-        private void GetRegeneration(BuffData buff)
+        private void TemporaryBuff(BuffStructure buff)
         {
-            Debug.Log("Feel good");
+            ParameterValueByBuffType parameterValueByType = new ParameterValueByBuffType(_playerParameters);
+
+            parameterValueByType.Matchings[buff.BuffType].Value = parameterValueByType.Matchings[buff.BuffType].Value * buff.BonusValue;
+            CountdownTimer timer = new CountdownTimer(buff.BonusDuration);
+            timer.timeIsOver += () =>
+            {
+                parameterValueByType.Matchings[buff.BuffType].Value = parameterValueByType.Matchings[buff.BuffType].Value / buff.BonusValue;
+                timer.Dispose();
+            };
         }
 
-        private void ChangeAttackSpeed(BuffData buffData)
+        private void InstantBuff(BuffStructure buff)
         {
-            Debug.Log("Hit like a bee!");
+            Debug.Log("Get Instant Buff");
         }
 
-        private void GetRage(BuffData buffData)
+        private void TickBuff(BuffStructure buff)
         {
-            Debug.Log("POWER!!");
+            Debug.Log("Get Tick Buff");
         }
-
-        //private void ChangeSpeed(BuffData buffData)
-        //{
-        //    var buffStructure = buffData.buffStructure;
-        //    var pastSpeed = _playerParameters.speed;
-        //    _playerParameters.speed = _playerParameters.speed * buffStructure.BonusValue;
-        //    BuffTimer timer = new BuffTimer(buffStructure.BonusDuration);
-        //    timer.timeIsOver += () =>
-        //    {
-        //        _playerParameters.speed = _playerParameters.speed / buffStructure.BonusValue;
-        //        timer.Dispose();
-
-        //    };
-        //}
     }
 }

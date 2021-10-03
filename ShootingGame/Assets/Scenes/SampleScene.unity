@@ -8355,9 +8355,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _parameters:
-    _currentHP: 0
-    _currentStamina: 0
+    currentHP: 0
+    currentStamina: 0
     speed: 0
+    attackPower: 0
   _speedForInitialization: 5
   _keystorege:
     _key: 0

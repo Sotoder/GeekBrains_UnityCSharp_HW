@@ -5,13 +5,13 @@ using System;
 
 namespace Model.ShootingGame
 {
-    public sealed class BuffTimer: IDisposable // Ёксперементальный таймер на коленке, исключительно пока не написал нормальный на MVC, прошу палкой сильно не бить.
+    public sealed class CountdownTimer: IDisposable // Ёксперементальный таймер на коленке, исключительно пока не написал нормальный на MVC, прошу палкой сильно не бить.
                                                // Ќо вообще интересно получилось, можно ли так делать дл€ простейших таймеров обратного отсчета, не требующих вывода на вьюху?
     {
         public UnityAction timeIsOver;
         private int _duration;
         private Thread _thread;
-        public BuffTimer(int duration)
+        public CountdownTimer(int duration)
         {
             _duration = duration;
             _thread = new Thread(StartTimer); 
@@ -20,20 +20,14 @@ namespace Model.ShootingGame
 
         private void StartTimer()
         {
-            Stopwatch stopWatch = new Stopwatch();
-            int roundIndent = 1;
-            int curentTimeDifferense = 0;
+            DateTime startTime = DateTime.Now;
+            double watchingTime = 0;
 
-            while (curentTimeDifferense <= _duration + roundIndent)
+            while (_duration - watchingTime >= 0)
             {
-                stopWatch.Start();
-                if (curentTimeDifferense >= _duration)
-                {
-                    timeIsOver?.Invoke();
-                }
-                stopWatch.Stop();
-                curentTimeDifferense += (int)stopWatch.Elapsed.TotalSeconds;
+                watchingTime = (DateTime.Now - startTime).TotalSeconds;
             }
+            timeIsOver?.Invoke();
         }
 
         public void Dispose()
