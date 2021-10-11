@@ -5,8 +5,6 @@ namespace PlayerInput.ShootingGame
 {
     public class BaseInput : MonoBehaviour, IInput
     {
-        public UnityAction pressGameMenuKey;
-
         private Vector3 _direction;
         private float _mouseLookX;
         private bool _isFire;
@@ -21,7 +19,6 @@ namespace PlayerInput.ShootingGame
         private const string VERTICAL = "Vertical";
         private const string MOUSE_X = "Mouse X";
         private const string FIRE1 = "Fire1";
-        private const string CANCEL = "Cancel";
         private const string CAMERA_ROTATE = "CameraRotate";
 
         private void Update()
@@ -52,11 +49,6 @@ namespace PlayerInput.ShootingGame
             else if (Input.GetAxis(CAMERA_ROTATE) < 1f)
             {
                 _isCameraRotate = false;
-            }
-
-            if (Input.GetButton(CANCEL))
-            {
-                pressGameMenuKey?.Invoke();
             }
         }
     }

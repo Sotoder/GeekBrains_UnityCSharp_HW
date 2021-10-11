@@ -4,22 +4,22 @@ using UnityEngine;
 
 namespace Model.ShootingGame
 {
-    public sealed class BuffController
+    public sealed class BuffController: IController
     {
         private delegate void BuffMethod(BuffStructure buff);
 
         private Parameters _playerParameters;
-        private IBuff[] _buffObjects;
-        private Dictionary<BuffTypes, BuffMethod> _buffMethods;
+        private List<BuffObject> _buffObjects;
+        private Dictionary<BuffTypes, BuffMethod> _timerMethods;
 
-        public BuffController(Parameters parameters, IBuff[] buffObjects)
+        public BuffController(Player player, List<BuffObject> buffObjects)
         {
-            _playerParameters = parameters;
+            _playerParameters = player.Parameters;
             _buffObjects = buffObjects;
 
-            SignOnBuffInstance(_buffObjects);
+            player.buffObjectCollected += CheckObjectInBuffCollection;
 
-            _buffMethods = new Dictionary<BuffTypes, BuffMethod>
+            _timerMethods = new Dictionary<BuffTypes, BuffMethod>
             {
                 [BuffTypes.Speed] = TemporaryBuff,
                 [BuffTypes.Regeneration] = TickBuff,
@@ -28,20 +28,20 @@ namespace Model.ShootingGame
             };
         }
 
-        private void SignOnBuffInstance(IBuff[] buffObjects)
+        private void CheckObjectInBuffCollection(GameObject gameObject)
         {
-            if (_buffObjects.Length > 0)
+            foreach (var element in _buffObjects)
             {
-                for (int i = 0; i < _buffObjects.Length; i++)
+                if (element.Object.GetInstanceID() == gameObject.GetInstanceID())
                 {
-                    _buffObjects[i].BuffCollected += ApplyBaff;
+                    ApplyBaff(element.BuffData.BuffStruct);
                 }
             }
         }
 
         private void ApplyBaff(BuffStructure buff)
         {
-            _buffMethods[buff.BuffType](buff);
+            _timerMethods[buff.BuffType](buff);
         }
 
         private void TemporaryBuff(BuffStructure buff)
@@ -50,6 +50,7 @@ namespace Model.ShootingGame
 
             parameterValueByType.Matchings[buff.BuffType].Value = parameterValueByType.Matchings[buff.BuffType].Value * buff.BonusValue;
             CountdownTimer timer = new CountdownTimer(buff.BonusDuration);
+            
             timer.timeIsOver += () =>
             {
                 parameterValueByType.Matchings[buff.BuffType].Value = parameterValueByType.Matchings[buff.BuffType].Value / buff.BonusValue;

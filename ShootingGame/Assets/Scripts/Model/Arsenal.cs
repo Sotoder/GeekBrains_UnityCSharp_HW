@@ -1,8 +1,9 @@
+using System;
 using UnityEngine;
 
 namespace Model.ShootingGame
 {
-    [System.Serializable]
+    [Serializable]
     public struct Arsenal
     {
         public string name;

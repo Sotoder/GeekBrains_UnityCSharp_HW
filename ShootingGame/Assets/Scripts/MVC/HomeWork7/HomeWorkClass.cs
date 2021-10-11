@@ -42,7 +42,7 @@ namespace Model.ShootingGame
             Debug.Log(arrayInfo.Item2);
             Debug.Log($"Уникальных элементов: {intArray.Length - arrayInfo.Item1}.\nПовторяющих элементов: {arrayInfo.Item1}");
 
-            Debug.Log(intArray.DuplicateValuesLinq()); //То же самое, но линком
+            Debug.Log(intArray.GroupByValues()); //То же самое, но линком
 
             List<string> strList = new List<string>
             {
@@ -70,7 +70,7 @@ namespace Model.ShootingGame
             Debug.Log(listInfo.Item2);
             Debug.Log($"Уникальных элементов: {strList.Count - listInfo.Item1}.\nПовторяющих элементов: {listInfo.Item1}");
 
-            Debug.Log(intArray.DuplicateValuesLinq());
+            Debug.Log(intArray.GroupByValues());
         }
 
         private void Task4a()
@@ -108,7 +108,7 @@ namespace Model.ShootingGame
             {
                 {"four",4 },
                 {"two",2 },
-                { "one",1 },
+                {"one",1 },
                 {"three",3 },
             };
 

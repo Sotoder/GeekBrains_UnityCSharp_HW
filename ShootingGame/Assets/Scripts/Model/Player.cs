@@ -1,14 +1,15 @@
 ﻿using PlayerInput.ShootingGame;
-using UI.ShootingGame;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 using static UnityEngine.Debug;
 
 namespace Model.ShootingGame
 {
     public sealed class Player : Unit, IDamageable
     {
+        public UnityAction<GameObject> buffObjectCollected;
+        public UnityAction<GameObject> keyObjectCollected;
         public UnityAction<int> takeDamage;
         public UnityAction<int> swapHP;
         public UnityAction getKey;
@@ -149,6 +150,19 @@ namespace Model.ShootingGame
                     _animator.runtimeAnimatorController = hand.controller;
                     return;
                 }
+            }
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.gameObject.layer == 7)
+            {
+                buffObjectCollected.Invoke(other.gameObject);
+            }
+            if ( other.gameObject.layer == 8)
+            {
+                keyObjectCollected.Invoke(other.gameObject);
+                GetKey();
             }
         }
     }

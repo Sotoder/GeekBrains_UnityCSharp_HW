@@ -5,14 +5,35 @@ namespace Model.ShootingGame
 
     public class GameStarter : MonoBehaviour
     {
-        [SerializeField] private Player _player;
+
+        [SerializeField] private GameInitializationData _dataForInitialization;
+
+        private GameController _mainController;
 
         private void Start()
         {
             new HomeWorkClass(); //Запускаем ДЗ 7 урока
 
-            var iBuffObjects = Object.FindObjectsOfType<BuffBehaviour>() as IBuff[];
-            new ControllersInitializator(_player, iBuffObjects);
+            _mainController = new GameController();
+            new MainInitializator(_dataForInitialization, _mainController);
+        }
+
+        private void Update()
+        {
+            var time = Time.deltaTime;
+            _mainController.Execute(time);
+        }
+
+        private void LateUpdate()
+        {
+            var time = Time.deltaTime;
+            _mainController.LateExecute(time);
+        }
+
+        private void FixedUpdate()
+        {
+            var time = Time.fixedTime;
+            _mainController.FixedExecute(time);
         }
     }
 }

@@ -1,93 +1,131 @@
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
-static public class Extensions
+namespace Model.ShootingGame
 {
-    public static int CharCount(this string self)
+    static public class Extensions
     {
-        return self.Length;
-    }
-
-    public static int ElementsCount<T>(this List<T> self)
-    {
-        return self.Count;
-    }
-
-    public static int ElementsCount<T>(this T[] self)
-    {
-        return self.Length;
-    }
-
-    public static (int, string) DuplicateValues<T>(this List<T> self)
-    {
-        Dictionary<T, int> RepitsCount = new Dictionary<T, int>();
-        string strResult = "";
-        int duplicateCount = 0;
-
-        foreach (T element in self)
+        public static int CharCount(this string self)
         {
-            if (RepitsCount.ContainsKey(element))
+            return self.Length;
+        }
+
+        public static int ElementsCount<T>(this List<T> self)
+        {
+            return self.Count;
+        }
+
+        public static int ElementsCount<T>(this T[] self)
+        {
+            return self.Length;
+        }
+
+        public static (int, string) DuplicateValues<T>(this List<T> self)
+        {
+            Dictionary<T, int> RepitsCount = new Dictionary<T, int>();
+            string strResult = "";
+            int duplicateCount = 0;
+
+            foreach (T element in self)
             {
-                RepitsCount[element]++;
-                duplicateCount++;
+                if (RepitsCount.ContainsKey(element))
+                {
+                    RepitsCount[element]++;
+                    duplicateCount++;
+                }
+                else
+                {
+                    RepitsCount.Add(element, 1);
+                }
             }
-            else
+
+            foreach (var element in RepitsCount)
             {
-                RepitsCount.Add(element, 1);
+                strResult += $"Значение: {element.Key}, вхождений: {element.Value}\n";
             }
+
+            return (duplicateCount, strResult);
         }
 
-        foreach (var element in RepitsCount)
+        public static (int, string) DuplicateValues<T>(this T[] self) // перегрузка для массивов
         {
-            strResult += $"Значение: {element.Key}, вхождений: {element.Value}\n";
-        }
+            Dictionary<T, int> RepitsCount = new Dictionary<T, int>();
+            string strResult = "";
+            int duplicateCount = 0;
 
-        return (duplicateCount, strResult);
-    }
-
-    public static (int, string) DuplicateValues<T>(this T[] self) // перегрузка для массивов
-    {
-        Dictionary<T, int> RepitsCount = new Dictionary<T, int>();
-        string strResult = "";
-        int duplicateCount = 0;
-
-        foreach (T element in self)
-        {
-            if (RepitsCount.ContainsKey(element))
+            foreach (T element in self)
             {
-                RepitsCount[element]++;
-                duplicateCount++;
+                if (RepitsCount.ContainsKey(element))
+                {
+                    RepitsCount[element]++;
+                    duplicateCount++;
+                }
+                else
+                {
+                    RepitsCount.Add(element, 1);
+                }
             }
-            else
+
+            foreach (var element in RepitsCount)
             {
-                RepitsCount.Add(element, 1);
+                strResult += $"Значение: {element.Key}, вхождений: {element.Value}\n";
+            }
+
+            return (duplicateCount, strResult);
+        }
+
+        public static string GroupByValues<T>(this T[] self) // Линком
+        {
+            string strResult = "Linq запросом\n";
+
+            //var groupList = from element in self
+            //                group self by element into g
+            //                orderby g.Key ascending
+            //                select new { g.Key, DuplicateCount = g.Count() };
+
+            var groupList = self.GroupBy(element => element).Select(s => new { s.Key, DuplicateCount = s.Count() }).OrderBy(g => g.Key);
+
+            foreach (var element in groupList)
+            {
+                strResult += $"Значение: {element.Key}, вхождений: {element.DuplicateCount}\n";
+            }
+
+            return strResult;
+        }
+
+        public static void CheckOnRepeats<T>(this List<T> self) where T : IUniqObjectCollectionElement
+        {
+
+            var isDuplicated = self.IsObjectDuplicated();
+            if (isDuplicated.Item1)
+            {
+                throw new ObjecDuplicateExeption($"Объект с InstanceID = {isDuplicated.Item2} встречается в коллекции {self.GetType()} более 1 раза");
             }
         }
 
-        foreach (var element in RepitsCount)
+        public static (bool, int) IsObjectDuplicated<T>(this List<T> self) where T: IUniqObjectCollectionElement
         {
-            strResult += $"Значение: {element.Key}, вхождений: {element.Value}\n";
+
+            var groupList = self.GroupBy(element => element.Object.GetInstanceID()).Select(s => new { s.Key, DuplicateCount = s.Count() }).OrderBy(g => g.Key);
+
+            foreach (var element in groupList)
+            {
+                if (element.DuplicateCount > 1) return (true, element.Key);
+            }
+
+            return (false, 0);
         }
 
-        return (duplicateCount, strResult);
-    }
-
-    public static string DuplicateValuesLinq<T>(this T[] self) // Линком
-    {
-        string strResult = "Linq запросом\n";
-
-        //var groupList = from element in self
-        //                group self by element into g
-        //                orderby g.Key ascending
-        //                select new { g.Key, DuplicateCount = g.Count() };
-
-        var groupList = self.GroupBy(element => element).Select(s => new {s.Key, DuplicateCount = s.Count()}).OrderBy(g => g.Key);
-
-        foreach (var element in groupList)
+        public static void CheckOnParentRepeats(this Dictionary<GameObject, float> self, GameObject targetObject)
         {
-            strResult += $"Значение: {element.Key}, вхождений: {element.DuplicateCount}\n";
+            foreach (var element in self)
+            {
+                if (element.Key.transform.parent.GetInstanceID() == targetObject.transform.parent.GetInstanceID())
+                {
+                    throw new ObjecDuplicateExeption($"Объект с InstanceID = {targetObject.GetInstanceID()} уже присутствует в PickUpObjects коллекции {self.GetType()}");
+                }
+            }            
         }
-
-        return strResult;
     }
 }
