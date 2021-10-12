@@ -64,7 +64,7 @@ namespace Model.ShootingGame
             }
 
             var savedBuffs = _data.Load(file).buffSaveData;
-            var objectToActivate = new Dictionary<GameObject, float>();
+            var objectsToActivate = new Dictionary<GameObject, float>();
 
             for (int i = 0; i < savedBuffs.Count; i++)
             {
@@ -75,7 +75,7 @@ namespace Model.ShootingGame
                         if (savedBuffs[i].isActive == true)
                         {
                             element.Object.SetActive(savedBuffs[i].isActive);
-                            objectToActivate.Add(element.Object.transform.GetChild(0).gameObject, element.Object.transform.position.y);
+                            objectsToActivate.Add(element.Object.transform.GetChild(0).gameObject, element.Object.transform.position.y);
                             _radarController.RegisterRadarObject(element.Object, element.IcoForRadarObject);
                         } else
                         {
@@ -85,9 +85,9 @@ namespace Model.ShootingGame
                     }
                 }
             }
-            if (objectToActivate.Count > 0)
+            if (objectsToActivate.Count > 0)
             {
-                _pickUpObjectsController.AddObjectsList(objectToActivate);
+                _pickUpObjectsController.AddObjectsList(objectsToActivate);
             }
 
             Debug.Log("Load");

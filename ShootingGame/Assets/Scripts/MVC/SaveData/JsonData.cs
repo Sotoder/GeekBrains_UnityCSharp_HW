@@ -9,50 +9,66 @@ namespace Model.ShootingGame
     {
         public void Save(T data, string path = null)
         {
-            var str = JsonUtility.ToJson(data);
-            File.WriteAllText(path, Encrypt(str));
+            var saveString = JsonUtility.ToJson(data);
+            File.WriteAllText(path, Encrypt(saveString));
         }
 
-        private string Encrypt(string str)
+        private string Encrypt(string saveString)
         {
             List<Byte[]> bytes = new List<byte[]>();
-            for (int i = 0; i < str.Length; i++)
+            for (int i = 0; i < saveString.Length; i++)
             {
-                bytes.Add(BitConverter.GetBytes(str[i]));
+                bytes.Add(BitConverter.GetBytes(saveString[i]));
             }
 
-            string newStr = "";
+            string encryptString = "";
             for (int i = 0; i < bytes.Count; i++)
             {
-                bytes[i][1] = (byte)(bytes[i][1] - 1);
-                newStr = newStr + BitConverter.ToChar(bytes[i], 0);
+                if (i < bytes.Count / 2)
+                {
+                    bytes[i][1] = (byte)~(bytes[i][1] + 20);
+                    encryptString = encryptString + BitConverter.ToChar(bytes[i], 0);
+                }
+                else
+                {
+                    bytes[i][1] = (byte)(~bytes[i][1] - 12);
+                    encryptString = encryptString + BitConverter.ToChar(bytes[i], 0);
+                }
             }
 
-            return newStr;
+            return encryptString;
         }
 
-        private string Decrypt(string str)
+        private string Decrypt(string encryptedString)
         {
             List<Byte[]> bytes = new List<byte[]>();
-            for (int i = 0; i < str.Length; i++)
+            for (int i = 0; i < encryptedString.Length; i++)
             {
-                bytes.Add(BitConverter.GetBytes(str[i]));
+                bytes.Add(BitConverter.GetBytes(encryptedString[i]));
             }
 
-            string newStr = "";
+            string decryptedString = "";
             for (int i = 0; i < bytes.Count; i++)
             {
-                bytes[i][1] = (byte)(bytes[i][1] + 1);
-                newStr = newStr + BitConverter.ToChar(bytes[i], 0);
+                if (i < bytes.Count / 2)
+                {
+                    bytes[i][1] = (byte)(~bytes[i][1] - 20);
+                    decryptedString = decryptedString + BitConverter.ToChar(bytes[i], 0);
+                }
+                else
+                {
+                    bytes[i][1] = (byte)~(bytes[i][1] + 12);
+                    decryptedString = decryptedString + BitConverter.ToChar(bytes[i], 0);
+                }
             }
 
-            return newStr;
+            return decryptedString;
         }
 
         public T Load(string path = null)
         {
-            var str = File.ReadAllText(path);
-            return JsonUtility.FromJson<T>(Decrypt(str));
+            var loadString = File.ReadAllText(path);
+            return JsonUtility.FromJson<T>(Decrypt(loadString));
         }
     }
 }
