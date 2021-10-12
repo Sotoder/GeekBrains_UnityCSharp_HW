@@ -24,9 +24,14 @@ namespace Model.ShootingGame
             string encryptString = "";
             for (int i = 0; i < bytes.Count; i++)
             {
-                if (i < bytes.Count / 2)
+                if (i < bytes.Count * 0.3f)
                 {
                     bytes[i][1] = (byte)~(bytes[i][1] + 20);
+                    encryptString = encryptString + BitConverter.ToChar(bytes[i], 0);
+                }
+                else if(i >= bytes.Count * 0.3f && i < bytes.Count * 0.6f)
+                {
+                    bytes[i][1] = (byte)~(~(bytes[i][1]-10) + 2);
                     encryptString = encryptString + BitConverter.ToChar(bytes[i], 0);
                 }
                 else
@@ -50,9 +55,14 @@ namespace Model.ShootingGame
             string decryptedString = "";
             for (int i = 0; i < bytes.Count; i++)
             {
-                if (i < bytes.Count / 2)
+                if (i < bytes.Count * 0.3f)
                 {
                     bytes[i][1] = (byte)(~bytes[i][1] - 20);
+                    decryptedString = decryptedString + BitConverter.ToChar(bytes[i], 0);
+                }
+                else if (i >= bytes.Count * 0.3f && i < bytes.Count * 0.6f)
+                {
+                    bytes[i][1] = (byte)(~(~bytes[i][1] - 2) + 10);
                     decryptedString = decryptedString + BitConverter.ToChar(bytes[i], 0);
                 }
                 else
