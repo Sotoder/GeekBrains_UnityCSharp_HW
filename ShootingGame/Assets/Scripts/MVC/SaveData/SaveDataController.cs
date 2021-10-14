@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Model.ShootingGame 
 {
-    public class SaveDataController : MonoBehaviour
+    public class SaveDataController
     {
         private InputController _inputController;
         private SaveDataRepository _saveDataRepository;

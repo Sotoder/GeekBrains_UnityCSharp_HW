@@ -14,5 +14,12 @@ namespace Model.ShootingGame
         public GameObject Object { get => _object; }
         public BuffData BuffData { get => _buffData; }
         public Image IcoForRadarObject { get => _icoForRadarObject; }
+
+        public BuffObject (GameObject obj, BuffData buffData, Image image)
+        {
+            _object = obj;
+            _buffData = buffData;
+            _icoForRadarObject = image;
+        }
     }
 }

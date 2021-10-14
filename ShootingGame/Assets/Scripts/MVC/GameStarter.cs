@@ -10,6 +10,8 @@ namespace Model.ShootingGame
 
         private GameController _mainController;
 
+        public GameInitializationData DataForInitialization { get => _dataForInitialization; }
+
         private void Start()
         {
             new HomeWorkClass(); //Запускаем ДЗ 7 урока
