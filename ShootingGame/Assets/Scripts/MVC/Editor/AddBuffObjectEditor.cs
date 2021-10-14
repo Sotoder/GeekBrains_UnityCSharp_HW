@@ -12,6 +12,7 @@ namespace Model.ShootingGame
 		private AddBuffObject _target;
 		private BuffData[] _scriptbleObjects;
 		private int _scriptbleObjectsArrayIndex;
+		private string _scriptbleObjectPath;
 		private bool _isDataSaved;
 
 		private void OnEnable()
@@ -32,6 +33,10 @@ namespace Model.ShootingGame
 
 			_target.obj = EditorGUILayout.ObjectField("Префаб или объект для клонирования", _target.obj, typeof(GameObject), true) as GameObject;
 			_scriptbleObjectsArrayIndex = EditorGUILayout.Popup("Бафф для объекта", _scriptbleObjectsArrayIndex, scriptbleObjectsNames);
+
+			_scriptbleObjectPath = AssetDatabase.GetAssetPath(_scriptbleObjects[_scriptbleObjectsArrayIndex]);
+			EditorGUILayout.SelectableLabel($"Путь к экземпляру BuffData: {_scriptbleObjectPath}", EditorStyles.textField, GUILayout.Height(20f)); 
+
 			_target.buffData = _scriptbleObjects[_scriptbleObjectsArrayIndex];
 			_target.icoForRadarObject = EditorGUILayout.ObjectField("Иконка для радара", _target.icoForRadarObject, typeof(Image), false) as Image;
 			_target.gameStarter = EditorGUILayout.ObjectField("GameStarter", _target.gameStarter, typeof(GameStarter), true) as GameStarter;
