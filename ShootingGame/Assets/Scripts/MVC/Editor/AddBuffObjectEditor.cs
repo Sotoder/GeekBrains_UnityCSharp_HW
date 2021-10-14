@@ -31,7 +31,6 @@ namespace Model.ShootingGame
 				scriptbleObjectsNames[element] = _scriptbleObjects[element].name;
             }
 
-			_target.obj = EditorGUILayout.ObjectField("Префаб или объект для клонирования", _target.obj, typeof(GameObject), true) as GameObject;
 			_scriptbleObjectsArrayIndex = EditorGUILayout.Popup("Бафф для объекта", _scriptbleObjectsArrayIndex, scriptbleObjectsNames);
 
 			_scriptbleObjectPath = AssetDatabase.GetAssetPath(_scriptbleObjects[_scriptbleObjectsArrayIndex]);
