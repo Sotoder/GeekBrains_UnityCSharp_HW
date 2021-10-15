@@ -16,6 +16,4 @@ MonoBehaviour:
     _buffType: 1
     _buffValue: 2
     _buffDuration: 5
-  _buffMask:
-    serializedVersion: 2
-    m_Bits: 128
+  _obj: Assets/Resources/Data/Buffs/x2_Speed.asset

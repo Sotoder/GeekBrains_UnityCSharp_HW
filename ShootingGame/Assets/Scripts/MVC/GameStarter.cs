@@ -2,13 +2,14 @@ using UnityEngine;
 
 namespace Model.ShootingGame
 {
-
     public class GameStarter : MonoBehaviour
     {
 
         [SerializeField] private GameInitializationData _dataForInitialization;
 
         private GameController _mainController;
+        [Path]
+        public string path;
 
         public GameInitializationData DataForInitialization { get => _dataForInitialization; }
 
@@ -18,6 +19,7 @@ namespace Model.ShootingGame
 
             _mainController = new GameController();
             new MainInitializator(_dataForInitialization, _mainController);
+            Debug.Log(path);
         }
 
         private void Update()

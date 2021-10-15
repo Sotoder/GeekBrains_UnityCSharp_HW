@@ -16,3 +16,4 @@ MonoBehaviour:
     _buffType: 2
     _buffValue: 5
     _buffDuration: 10
+  _obj: 

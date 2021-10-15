@@ -10,9 +10,6 @@ namespace Model.ShootingGame
     public class AddBuffObjectEditor : Editor
     {
 		private AddBuffObject _target;
-		private BuffData[] _scriptbleObjects;
-		private int _scriptbleObjectsArrayIndex;
-		private string _scriptbleObjectPath;
 		private bool _isDataSaved;
 
 		private void OnEnable()
@@ -23,20 +20,20 @@ namespace Model.ShootingGame
 		public override void OnInspectorGUI()
 		{
 			Resources.LoadAll<BuffData>("Data/Buffs");			
-			_scriptbleObjects = Resources.FindObjectsOfTypeAll<BuffData>();
+			var scriptbleObjects = Resources.FindObjectsOfTypeAll<BuffData>();
 
-			var scriptbleObjectsNames = new string[_scriptbleObjects.Length];
-			for(int element = 0; element < _scriptbleObjects.Length; element++)
+			var scriptbleObjectsNames = new string[scriptbleObjects.Length];
+			for(int element = 0; element < scriptbleObjects.Length; element++)
             {
-				scriptbleObjectsNames[element] = _scriptbleObjects[element].name;
+				scriptbleObjectsNames[element] = scriptbleObjects[element].name;
             }
 
-			_scriptbleObjectsArrayIndex = EditorGUILayout.Popup("Бафф для объекта", _scriptbleObjectsArrayIndex, scriptbleObjectsNames);
+			var scriptbleObjectsArrayIndex = 0;
+			scriptbleObjectsArrayIndex = EditorGUILayout.Popup("Бафф для объекта", scriptbleObjectsArrayIndex, scriptbleObjectsNames);
+			var scriptbleObjectPath = AssetDatabase.GetAssetPath(scriptbleObjects[scriptbleObjectsArrayIndex]);
+			EditorGUILayout.SelectableLabel($"Путь к экземпляру BuffData: {scriptbleObjectPath}", EditorStyles.textField, GUILayout.Height(20f)); 
 
-			_scriptbleObjectPath = AssetDatabase.GetAssetPath(_scriptbleObjects[_scriptbleObjectsArrayIndex]);
-			EditorGUILayout.SelectableLabel($"Путь к экземпляру BuffData: {_scriptbleObjectPath}", EditorStyles.textField, GUILayout.Height(20f)); 
-
-			_target.buffData = _scriptbleObjects[_scriptbleObjectsArrayIndex];
+			_target.buffData = scriptbleObjects[scriptbleObjectsArrayIndex];
 			_target.icoForRadarObject = EditorGUILayout.ObjectField("Иконка для радара", _target.icoForRadarObject, typeof(Image), false) as Image;
 			_target.gameStarter = EditorGUILayout.ObjectField("GameStarter", _target.gameStarter, typeof(GameStarter), true) as GameStarter;
 

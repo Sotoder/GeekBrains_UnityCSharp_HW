@@ -452,7 +452,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3262ae96001d604488c4fa823bbe9c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  obj: {fileID: 247155560}
   buffData: {fileID: 11400000, guid: 133b399b85b31724db5a62822bc152b8, type: 2}
   icoForRadarObject: {fileID: 6014745556994806794, guid: d6ac3c3d1689fc54a9780c3b965cad15, type: 3}
   gameStarter: {fileID: 3266783685824459716}
@@ -8273,6 +8272,7 @@ MonoBehaviour:
       _miniMapCamera: {fileID: 1884392016}
     _radarInitializationData:
       _radar: {fileID: 484233819}
+  da: 
 --- !u!114 &3266783685824459717
 MonoBehaviour:
   m_ObjectHideFlags: 0
