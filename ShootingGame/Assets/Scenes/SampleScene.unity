@@ -8272,7 +8272,7 @@ MonoBehaviour:
       _miniMapCamera: {fileID: 1884392016}
     _radarInitializationData:
       _radar: {fileID: 484233819}
-  da: 
+  path: 
 --- !u!114 &3266783685824459717
 MonoBehaviour:
   m_ObjectHideFlags: 0
