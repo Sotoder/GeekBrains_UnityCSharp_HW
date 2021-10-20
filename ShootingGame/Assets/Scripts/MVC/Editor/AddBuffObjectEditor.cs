@@ -11,6 +11,9 @@ namespace Model.ShootingGame
     {
 		private AddBuffObject _target;
 		private bool _isDataSaved;
+		private AddBuffWindow _buffWindow;
+
+		public int scriptbleObjectsArrayIndex;
 
 		private void OnEnable()
 		{
@@ -22,22 +25,36 @@ namespace Model.ShootingGame
 			Resources.LoadAll<BuffData>("Data/Buffs");			
 			var scriptbleObjects = Resources.FindObjectsOfTypeAll<BuffData>();
 
-			var scriptbleObjectsNames = new string[scriptbleObjects.Length];
+			var scriptbleObjectsNames = new string[scriptbleObjects.Length + 1];
 			for(int element = 0; element < scriptbleObjects.Length; element++)
             {
 				scriptbleObjectsNames[element] = scriptbleObjects[element].name;
             }
 
-			var scriptbleObjectsArrayIndex = 0;
+			scriptbleObjectsNames[scriptbleObjectsNames.Length - 1] = "Add buff";
+
 			scriptbleObjectsArrayIndex = EditorGUILayout.Popup("Бафф для объекта", scriptbleObjectsArrayIndex, scriptbleObjectsNames);
-			var scriptbleObjectPath = AssetDatabase.GetAssetPath(scriptbleObjects[scriptbleObjectsArrayIndex]);
-			EditorGUILayout.SelectableLabel($"Путь к экземпляру BuffData: {scriptbleObjectPath}", EditorStyles.textField, GUILayout.Height(20f)); 
 
-			_target.buffData = scriptbleObjects[scriptbleObjectsArrayIndex];
-			_target.icoForRadarObject = EditorGUILayout.ObjectField("Иконка для радара", _target.icoForRadarObject, typeof(Image), false) as Image;
-			_target.gameStarter = EditorGUILayout.ObjectField("GameStarter", _target.gameStarter, typeof(GameStarter), true) as GameStarter;
+            if (scriptbleObjectsArrayIndex == scriptbleObjectsNames.Length - 1)
+            {
+				scriptbleObjectsArrayIndex = 0;
+				_buffWindow = ScriptableObject.CreateInstance<AddBuffWindow>();
+				_buffWindow.Open(this);
 
-			var isPressSaveButton = GUILayout.Button("Начать создание объектов", EditorStyles.miniButton);
+				//var buffWindow = EditorWindow.GetWindow(typeof(AddBuffWindow), false, "BuffWindow", true);
+            }
+            else
+            {
+				var scriptbleObjectPath = AssetDatabase.GetAssetPath(scriptbleObjects[scriptbleObjectsArrayIndex]);
+				EditorGUILayout.SelectableLabel($"Путь к экземпляру BuffData: {scriptbleObjectPath}", EditorStyles.textField, GUILayout.Height(20f));
+
+				_target.buffData = scriptbleObjects[scriptbleObjectsArrayIndex];
+				_target.icoForRadarObject = EditorGUILayout.ObjectField("Иконка для радара", _target.icoForRadarObject, typeof(Image), false) as Image;
+				_target.gameStarter = EditorGUILayout.ObjectField("GameStarter", _target.gameStarter, typeof(GameStarter), true) as GameStarter;
+			}
+
+
+            var isPressSaveButton = GUILayout.Button("Начать создание объектов", EditorStyles.miniButton);
 			var isPressCancelButton = GUILayout.Button("Прекратить создание объектов", EditorStyles.miniButton);
 
 			if (isPressSaveButton)

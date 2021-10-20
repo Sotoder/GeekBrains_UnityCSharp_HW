@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class BuffInitializator
 {
-    private Player _player;
     private BuffInitializationData _buffInitializationData;
     private RadarController _radarController;
     private Dictionary<GameObject, float> _buffObjectList = new Dictionary<GameObject, float>();
@@ -13,7 +12,6 @@ public class BuffInitializator
 
     public BuffInitializator(Player player, BuffInitializationData buffInitializationData, PickUpObjectsController pikUpObjectController, RadarController radarController)
     {
-        _player = player;
         _buffInitializationData = buffInitializationData;
         _radarController = radarController;
 
@@ -22,7 +20,7 @@ public class BuffInitializator
         InstantiateBuffObjects();
         pikUpObjectController.AddObjectsList(_buffObjectList);
 
-        new BuffController(_player, _buffInitializationData.BuffObjectCollection);
+        new BuffController(player, _buffInitializationData.BuffObjectCollection);
     }
 
     private void InstantiateBuffObjects()

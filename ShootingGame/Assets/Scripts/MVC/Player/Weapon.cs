@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Model.ShootingGame
 {
     [Serializable]
-    public struct Arsenal
+    public struct Weapon
     {
         public string name;
         public GameObject rightGun;

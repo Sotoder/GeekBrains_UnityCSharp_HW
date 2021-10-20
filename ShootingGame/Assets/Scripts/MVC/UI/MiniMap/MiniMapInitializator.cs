@@ -12,7 +12,7 @@ namespace Model.ShootingGame
 
         public MiniMapInitializator(Player player, MiniMapInitializationData miniMapInitializationData)
         {
-            _player = player.transform;
+            _player = player.PlayerData.GameObject.transform;
             _camera = miniMapInitializationData.MiniMapCamera;
 
             InitializeCamera();

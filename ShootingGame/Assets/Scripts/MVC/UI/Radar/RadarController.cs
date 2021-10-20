@@ -7,7 +7,7 @@ namespace Model.ShootingGame
 	public class RadarController: IController, IExecute
 	{
 		private GameObject _radar;
-		private Player _player;
+		private Transform _player;
 		private List<RadarObject> RadObjects = new List<RadarObject>();
 
 		private const float MAP_SCALE = 2;
@@ -15,7 +15,7 @@ namespace Model.ShootingGame
 		public RadarController(Player player, GameObject radar)
         {
 			_radar = radar;
-			_player = player;
+			_player = player.PlayerData.GameObject.transform;
         }
 		
 		public void Execute(float deltaTime)
@@ -31,11 +31,11 @@ namespace Model.ShootingGame
 			foreach (RadarObject radObject in RadObjects)
 			{
 				Vector3 radarPos = (radObject.Owner.transform.position -
-									_player.transform.position);
-				float distToObject = Vector3.Distance(_player.transform.position,
+									_player.position);
+				float distToObject = Vector3.Distance(_player.position,
 										 radObject.Owner.transform.position) * MAP_SCALE;
 				float deltay = Mathf.Atan2(radarPos.x, radarPos.z) * Mathf.Rad2Deg -
-							   270 - _player.transform.eulerAngles.y;
+							   270 - _player.eulerAngles.y;
 				radarPos.x = distToObject * Mathf.Cos(deltay * Mathf.Deg2Rad) * -1;
 				radarPos.z = distToObject * Mathf.Sin(deltay * Mathf.Deg2Rad);
 				radObject.Icon.transform.SetParent(_radar.transform);

@@ -1,3 +1,6 @@
-﻿public interface IController
+﻿namespace Model.ShootingGame
 {
+    public interface IController
+    {
+    }
 }

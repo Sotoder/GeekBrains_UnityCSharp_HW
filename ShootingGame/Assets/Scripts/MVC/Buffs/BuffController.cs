@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,7 +13,7 @@ namespace Model.ShootingGame
 
         public BuffController(Player player, List<BuffObject> buffObjects)
         {
-            _playerParameters = player.Parameters;
+            _playerParameters = player.PlayerData.Parameters;
             _buffObjects = buffObjects;
 
             player.buffObjectCollected += CheckObjectInBuffCollection;

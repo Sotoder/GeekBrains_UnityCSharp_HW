@@ -7,7 +7,8 @@ namespace Model.ShootingGame
     {
         public UnityAction<bool> isMenuButtonPressed = delegate (bool b) { };
         public UnityAction<bool> isFireButtonPressed = delegate (bool b) { };
-        public UnityAction<bool> isCameraRotateButtonPressed = delegate (bool b) { };
+        public UnityAction<bool> isCameraRotateButtonDown = delegate (bool b) { };
+        public UnityAction<bool> isCameraRotateButtonUp = delegate (bool b) { };
         public UnityAction<bool> isSaveButtonPressed = delegate (bool b) { };
         public UnityAction<bool> isLoadButtonPressed = delegate (bool b) { };
         public UnityAction<float> horizontalAxisOnChange = delegate (float f) { };
@@ -28,7 +29,8 @@ namespace Model.ShootingGame
             mouseXAxisOnChange.Invoke(Input.GetAxis(InputData.MOUSE_X));
             isMenuButtonPressed.Invoke(Input.GetKeyDown(_inputData.GameMenu));
             isFireButtonPressed.Invoke(Input.GetKeyDown(_inputData.Fire));
-            isCameraRotateButtonPressed.Invoke(Input.GetKeyDown(_inputData.CameraRotate));
+            isCameraRotateButtonDown.Invoke(Input.GetKeyDown(_inputData.CameraRotate));
+            isCameraRotateButtonUp.Invoke(Input.GetKeyUp(_inputData.CameraRotate));
             isSaveButtonPressed.Invoke(Input.GetKeyDown(_inputData.SavePlayer));
             isLoadButtonPressed.Invoke(Input.GetKeyDown(_inputData.LoadPlayer));
         }

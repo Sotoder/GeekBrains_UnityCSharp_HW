@@ -1,12 +1,11 @@
 ﻿using PlayerInput.ShootingGame;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.UI;
 using static UnityEngine.Debug;
 
 namespace Model.ShootingGame
 {
-    public sealed class Player : Unit, IDamageable
+    public sealed class Player : MonoBehaviour, IDamageable
     {
         public UnityAction<GameObject> buffObjectCollected;
         public UnityAction<GameObject> keyObjectCollected;
@@ -14,27 +13,28 @@ namespace Model.ShootingGame
         public UnityAction<int> swapHP;
         public UnityAction getKey;
 
-        [SerializeField] private Keystorege _keystorege;
+        [SerializeField] private int _speedForInitialization;        
         [SerializeField] private float _sensetivity = 20f;
         [SerializeField] private Transform rightGunBone;
         [SerializeField] private int _maxHP;
         [SerializeField] private int _maxStamina;
 
+        public bool isStay = true;
+        public Rigidbody unitRigidBody;
+        public Weapon[] _arsenal;
+
+        private Keystorege _keystorege;
+        private Parameters _parameters;
         private BaseInput _input;
-        private Vector3 _moveForvard;
-        private Vector3 _moveRight;
-        private float _mouseLookX;
-        private bool _isStay = true;
-        public Arsenal[] _arsenal;
         private Animator _animator;
 
-        public bool IsStay { get => _isStay; }
         public BaseInput CurrentInput { get => _input; }
 
         public Parameters Parameters { get => _parameters; }
         public int MaxHP { get => _maxHP; }
         public int MaxStamina { get => _maxStamina; }
         public Keystorege Keystorege { get => _keystorege; }
+        public float Sensetivity { get => _sensetivity; }
 
         //private const int DEFAULT_HP = 100;
         //private const int DEFAULT_STAMINA = 100;
@@ -42,27 +42,12 @@ namespace Model.ShootingGame
 
         private void Awake()
         {
-            //try // Ну вот просто за ради играний с обработкой эксепшена написано, а так знаю что атата, лид не разрешал!
-            //{
-            //    if (_maxHP < 0) throw new ParameterException("Некорректно указано здоровье персонажа", _maxHP);
-            //    Debug.Log("ok");
-            //}
-            //catch (ParameterException e)
-            //{
-            //    Debug.LogWarning($"{e.Message} {e.Parameter}");
-            //    Debug.LogWarning($"Здоровье будет установлено по умолчанию {DefaultHP}");
-            //}
-            //finally
-            //{
-            //    _maxHP = DefaultHP;
-            //}
-
             if (_maxHP < 0) throw new PlayerHPExeption("Некорректно указано здоровье персонажа", _maxHP);
 
 
             _input = GetComponent<BaseInput>();
             _animator = GetComponent<Animator>();
-            _rb = GetComponent<Rigidbody>();
+            unitRigidBody = GetComponent<Rigidbody>();
 
             _keystorege = new Keystorege(this);
             _parameters = new Parameters(this, _maxHP, _maxStamina, _speedForInitialization);
@@ -70,7 +55,7 @@ namespace Model.ShootingGame
             Cursor.lockState = CursorLockMode.Locked;
 
             if (_arsenal.Length > 0)
-                SetArsenal(_arsenal[0].name);
+                SetWeapon(_arsenal[0].name);
 
         }
 
@@ -82,39 +67,6 @@ namespace Model.ShootingGame
                 Log("Pew");
             }
         }
-
-        private void FixedUpdate()
-        {
-
-            if (_input.Direction.x != 0 || _input.Direction.z != 0)
-            {
-                _moveForvard = _input.Direction.x * _parameters.speed * transform.forward;
-                _moveRight = _input.Direction.z * _parameters.speed * transform.right;
-                MovementLogic(_moveForvard + _moveRight);
-                _isStay = false;
-            }
-            else _isStay = true;         
-
-            if (!_input.IsCameraRotate)
-            {
-                _mouseLookX = _input.MouseLookX * _sensetivity;
-                PlayerLook();
-            }
-
-        }
-
-        private void MovementLogic(Vector3 moveVector)
-        {
-            _rb.velocity = moveVector;
-            //_rb.AddForce(transform.forward * speed.z, ForceMode.VelocityChange);
-            //_rb.AddForce(transform.right * speed.x, ForceMode.VelocityChange);
-        }
-
-        private void PlayerLook()
-        {
-            transform.Rotate(0, _mouseLookX, 0);
-        }
-
         public void TakeDamage(int damage)
         {
             Log("Auch!");
@@ -132,22 +84,22 @@ namespace Model.ShootingGame
             Log(_keystorege.Key);
         }
 
-        public void SetArsenal(string name)
+        public void SetWeapon(string name)
         {
-            foreach (Arsenal hand in _arsenal)
+            foreach (Weapon weapon in _arsenal)
             {
-                if (hand.name == name)
+                if (weapon.name == name)
                 {
                     if (rightGunBone.childCount > 0)
                         Destroy(rightGunBone.GetChild(0).gameObject);
-                    if (hand.rightGun != null)
+                    if (weapon.rightGun != null)
                     {
-                        GameObject newRightGun = (GameObject)Instantiate(hand.rightGun);
+                        GameObject newRightGun = (GameObject)Instantiate(weapon.rightGun);
                         newRightGun.transform.parent = rightGunBone;
                         newRightGun.transform.localPosition = Vector3.zero;
                         newRightGun.transform.localRotation = Quaternion.Euler(90, 0, 0);
                     }
-                    _animator.runtimeAnimatorController = hand.controller;
+                    _animator.runtimeAnimatorController = weapon.controller;
                     return;
                 }
             }

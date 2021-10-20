@@ -9,12 +9,19 @@ namespace Model.ShootingGame
                                                // Но вообще интересно получилось, можно ли так делать для простейших таймеров обратного отсчета, не требующих вывода на вьюху?
     {
         public UnityAction timeIsOver;
-        private int _duration;
+        private float _duration;
         private Thread _thread;
         public CountdownTimer(int duration)
         {
-            _duration = duration;
+            _duration = (float)duration;
             _thread = new Thread(StartTimer); 
+            _thread.Start();
+        }
+
+        public CountdownTimer(float duration)
+        {
+            _duration = duration;
+            _thread = new Thread(StartTimer);
             _thread.Start();
         }
 

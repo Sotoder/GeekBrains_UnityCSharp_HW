@@ -1,4 +1,6 @@
-﻿namespace Model.ShootingGame
+﻿using UnityEngine;
+
+namespace Model.ShootingGame
 {
     public class GameController: IController
     {
@@ -25,9 +27,14 @@
             {
                 _model.FixedControllers.Add(fixedController);
             }
+
+            if (controller is ITriggerableOnEnter triggerController)
+            {
+                _model.TriggerEnterControllers.Add(triggerController);
+            }
         }
 
-        internal void Execute(float deltaTime)
+        public void Execute(float deltaTime)
         {
             for (var element = 0; element < _model.ExecuteControllers.Count; ++element)
             {
@@ -35,7 +42,7 @@
             }
         }
 
-        internal void LateExecute(float deltaTime)
+        public void LateExecute(float deltaTime)
         {
             for (var element = 0; element < _model.LateExecuteControllers.Count; ++element)
             {
@@ -43,11 +50,19 @@
             }
         }
 
-        internal void FixedExecute(float fixedTime)
+        public void TriggerEnter(Collider collider)
+        {
+            for (var element = 0; element < _model.TriggerEnterControllers.Count; ++element)
+            {
+                _model.TriggerEnterControllers[element].TriggerEnter(collider);
+            }
+        }
+
+        public void FixedExecute(float fixedTime, float fixedDeltaTime)
         {
             for (var element = 0; element < _model.FixedControllers.Count; ++element)
             {
-                _model.FixedControllers[element].FixedExecute(fixedTime);
+                _model.FixedControllers[element].FixedExecute(fixedTime, fixedDeltaTime);
             }
         }
     }

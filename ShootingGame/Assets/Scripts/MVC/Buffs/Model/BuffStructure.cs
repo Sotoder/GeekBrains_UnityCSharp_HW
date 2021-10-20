@@ -7,13 +7,20 @@ namespace Model.ShootingGame
     public struct BuffStructure
     {
         [SerializeField] private BuffTypes _buffType;
-        [Range(0, 5)]
+        [Range(1, 5)]
         [SerializeField] private int _buffValue;
-        [Range(0, 10)]
+        [Range(1, 10)]
         [SerializeField] private int _buffDuration;
 
         public int BonusValue { get => _buffValue; }
         public int BonusDuration { get => _buffDuration; }
         public BuffTypes BuffType { get => _buffType; }
+
+        public void SetValue(int buffValue, int buffDuration, BuffTypes buffType)
+        {
+            _buffDuration = buffDuration;
+            _buffValue = buffValue;
+            _buffType = buffType;
+        }
     }
 }

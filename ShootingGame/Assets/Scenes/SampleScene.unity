@@ -3149,7 +3149,6 @@ GameObject:
   m_Component:
   - component: {fileID: 963194228}
   - component: {fileID: 963194227}
-  - component: {fileID: 963194230}
   - component: {fileID: 963194226}
   m_Layer: 0
   m_Name: Main Camera
@@ -3224,28 +3223,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 14, y: 0, z: 0}
---- !u!114 &963194230
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 963194225}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 77754e7d4b46b674a9df65482074aba4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _camera: {fileID: 963194227}
-  _target: {fileID: 1468497810}
-  _playerObject: {fileID: 3266783685824459712}
-  _speedX: 360
-  _noPlayer:
-    serializedVersion: 2
-    m_Bits: 215
-  _environtment:
-    serializedVersion: 2
-    m_Bits: 64
 --- !u!1 &968924643
 GameObject:
   m_ObjectHideFlags: 0
@@ -8179,9 +8156,7 @@ GameObject:
   - component: {fileID: 3266783685814960544}
   - component: {fileID: 3266783685824459714}
   - component: {fileID: 3266783685824459715}
-  - component: {fileID: 3266783685824459717}
   - component: {fileID: 3266783685824459716}
-  - component: {fileID: 3266783685824459718}
   - component: {fileID: 3266783685824459713}
   m_Layer: 3
   m_Name: Sci-Fi_Soldier
@@ -8245,8 +8220,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _dataForInitialization:
-    _player: {fileID: 3266783685824459717}
     _inputData: {fileID: 11400000, guid: a850eae943308044480b10d18c34645f, type: 2}
+    _playerInitializationData:
+      playerObject: {fileID: 3266783685824459712}
+      _speedForInitialization: 300
+      _sensetivity: 200
+      _maxHP: 100
+      _maxStamina: 100
+      rightGunBone: {fileID: 3266783685824491090}
+      _arsenal:
+      - name: SniperRifle
+        rightGun: {fileID: 100000, guid: d992a232642f7574b80a75c2ca4b4cb8, type: 3}
+        controller: {fileID: 9100000, guid: 23296886313f7554fbf873b1ee81621d, type: 2}
     _buffObjectsInitializationData:
       _buffObjectCollection:
       - _object: {fileID: 247155560}
@@ -8272,48 +8257,14 @@ MonoBehaviour:
       _miniMapCamera: {fileID: 1884392016}
     _radarInitializationData:
       _radar: {fileID: 484233819}
-  path: 
---- !u!114 &3266783685824459717
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3266783685824459712}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e87286ae3ef6fd40aa99389e47bd537, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _parameters:
-    currentHP: 0
-    currentStamina: 0
-    speed: 0
-    attackPower: 0
-  _speedForInitialization: 5
-  _keystorege:
-    _key: 0
-  _sensetivity: 20
-  rightGunBone: {fileID: 3266783685824491090}
-  _maxHP: 100
-  _maxStamina: 100
-  _arsenal:
-  - name: SniperRifle
-    rightGun: {fileID: 100000, guid: d992a232642f7574b80a75c2ca4b4cb8, type: 3}
-    controller: {fileID: 9100000, guid: 23296886313f7554fbf873b1ee81621d, type: 2}
---- !u!135 &3266783685824459718
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3266783685824459712}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.64215356
-  m_Center: {x: 0, y: 0.5, z: 0}
+    _cameraInitializationData:
+      _noPlayer:
+        serializedVersion: 2
+        m_Bits: 503
+      _environtment:
+        serializedVersion: 2
+        m_Bits: 64
+      _target: {fileID: 1468497810}
 --- !u!4 &3266783685824491008
 Transform:
   m_ObjectHideFlags: 0

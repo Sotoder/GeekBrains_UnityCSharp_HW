@@ -21,7 +21,7 @@ namespace Model.ShootingGame
 
         protected override void SignOnEvents()
         {
-            _player.Keystorege.allKeysCollected += ShowEndGameMenu;
+            _player.PlayerData.Keystorege.allKeysCollected += ShowEndGameMenu;
             _buttonRestart.onClick.AddListener(RestartGame);
             _buttonExit.onClick.AddListener(ExitGame);
         }
@@ -37,7 +37,7 @@ namespace Model.ShootingGame
         {
             _buttonRestart.onClick.RemoveListener(RestartGame);
             _buttonExit.onClick.RemoveListener(ExitGame);
-            _player.Keystorege.allKeysCollected -= ShowEndGameMenu;
+            _player.PlayerData.Keystorege.allKeysCollected -= ShowEndGameMenu;
         }
     }
 }

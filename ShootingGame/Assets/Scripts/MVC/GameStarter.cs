@@ -8,18 +8,14 @@ namespace Model.ShootingGame
         [SerializeField] private GameInitializationData _dataForInitialization;
 
         private GameController _mainController;
-        [Path]
-        public string path;
 
         public GameInitializationData DataForInitialization { get => _dataForInitialization; }
 
         private void Start()
         {
-            new HomeWorkClass(); //Запускаем ДЗ 7 урока
 
             _mainController = new GameController();
             new MainInitializator(_dataForInitialization, _mainController);
-            Debug.Log(path);
         }
 
         private void Update()
@@ -36,8 +32,14 @@ namespace Model.ShootingGame
 
         private void FixedUpdate()
         {
-            var time = Time.fixedTime;
-            _mainController.FixedExecute(time);
+            var fixedTime = Time.fixedTime;
+            var fixedDeltaTime = Time.fixedDeltaTime;
+            _mainController.FixedExecute(fixedTime, fixedDeltaTime);
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            _mainController.TriggerEnter(other);
         }
     }
 }

@@ -10,6 +10,8 @@ namespace Model.ShootingGame
         [SerializeField] protected float _radius = 3f;
         [SerializeField] protected GameObject _particleObject;
         [SerializeField] protected GameObject _mineBody;
+        
+        public Player player;
 
         protected bool _isBombed = false;
         protected float _stayTime = 0f;
@@ -17,7 +19,7 @@ namespace Model.ShootingGame
         protected void OnTriggerStay(Collider other)
         {
             if (_isBombed) return;
-            if (other.gameObject.TryGetComponent<IDamageable>(out IDamageable target))
+            if (other.gameObject.TryGetComponent<IDamageable>(out IDamageable target) || IsPlayer(other.gameObject, out target))
             {
 
                 _stayTime += Time.deltaTime;
@@ -38,7 +40,7 @@ namespace Model.ShootingGame
 
         protected void OnCollisionEnter(Collision collision)
         {
-            if (collision.gameObject.TryGetComponent<IDamageable>(out IDamageable target))
+            if (collision.gameObject.TryGetComponent<IDamageable>(out IDamageable target) || IsPlayer(collision.gameObject, out target))
             {
                 Undermining();
             }
@@ -49,12 +51,25 @@ namespace Model.ShootingGame
             var colliders = Physics.OverlapSphere(transform.position, _radius);
             foreach (var hit in colliders)
             {
-                if (hit.gameObject.TryGetComponent<IDamageable>(out IDamageable target))
+                if (hit.gameObject.TryGetComponent<IDamageable>(out IDamageable target) || IsPlayer(hit.gameObject, out target))
                 {
                     InflictDamage(target);
                 }
             }
             Dispose();
+        }
+
+        protected bool IsPlayer(GameObject gameObject, out IDamageable target)
+        {
+            if (gameObject.GetInstanceID() == player.PlayerData.GameObject.GetInstanceID())
+            {
+                target = player;
+                return true;
+            } else
+            {
+                target = null;
+                return false;
+            }
         }
 
         protected abstract void InflictDamage(IDamageable target);

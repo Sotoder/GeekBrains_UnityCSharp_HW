@@ -50,7 +50,7 @@ public class PickUpObjectsController: IFixedExecute, IController, ITwitching, IR
         }
     }
 
-    public void FixedExecute(float fixedTime)
+    public void FixedExecute(float fixedTime, float fixedDeltaTime)
     {
         foreach (var element in _objectList)
         {

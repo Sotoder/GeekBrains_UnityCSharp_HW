@@ -11,5 +11,10 @@ namespace Model.ShootingGame
         [SerializeField] private BuffStructure _buffStructure;
 
         public BuffStructure BuffStruct { get => _buffStructure; }
+
+        public void SetValue (int buffValue, int buffDuration, BuffTypes buffType)
+        {
+            _buffStructure.SetValue(buffValue, buffDuration, buffType);
+        }
     }
 }

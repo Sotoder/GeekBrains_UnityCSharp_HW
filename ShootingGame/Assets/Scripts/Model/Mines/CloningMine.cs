@@ -12,11 +12,11 @@ namespace Model.ShootingGame
         private const float MaxCopyDistanse = 2f;
         private const float MinCopyDistanse = 0.5f;
         private const float IndentOfObstacles = 0.5f;
-        
+
 
         protected new void OnCollisionEnter(Collision collision)
         {
-            if (collision.gameObject.TryGetComponent<IDamageable>(out IDamageable target))
+            if (collision.gameObject.TryGetComponent<IDamageable>(out IDamageable target) || IsPlayer(collision.gameObject, out target))
             {
                 Clone();
             }
@@ -35,7 +35,9 @@ namespace Model.ShootingGame
                 spawnPoint = new Vector3(spherePoint.x, transform.position.y, spherePoint.z);
             }
 
-            return Instantiate(this, spawnPoint, transform.rotation);
+            var clone = Instantiate(this, spawnPoint, transform.rotation);
+            clone.player = player;
+            return clone;
         }
 
         protected override void InflictDamage(IDamageable target)

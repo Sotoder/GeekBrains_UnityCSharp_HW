@@ -16,8 +16,8 @@ namespace Model.ShootingGame {
 
         protected void RestartGame()
         {
-            _player.Keystorege.Dispose();
-            _player.Parameters.Dispose();
+            _player.PlayerData.Keystorege.Dispose();
+            _player.PlayerData.Parameters.Dispose();
             Dispose();
             Debug.Log("Reloading scene");
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
@@ -26,8 +26,8 @@ namespace Model.ShootingGame {
 
         protected void ExitGame()
         {
-            _player.Keystorege.Dispose();
-            _player.Parameters.Dispose();
+            _player.PlayerData.Keystorege.Dispose();
+            _player.PlayerData.Parameters.Dispose();
             Dispose();
             Application.Quit();
         }

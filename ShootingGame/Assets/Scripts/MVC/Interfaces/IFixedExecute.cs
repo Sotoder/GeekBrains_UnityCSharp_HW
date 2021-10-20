@@ -2,6 +2,6 @@
 {
     internal interface IFixedExecute
     {
-        public void FixedExecute(float fixedTime);
+        public void FixedExecute(float fixedTime, float fixedDeltaTime);
     }
 }
