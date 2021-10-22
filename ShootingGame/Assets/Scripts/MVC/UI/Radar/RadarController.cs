@@ -12,7 +12,7 @@ namespace Model.ShootingGame
 
 		private const float MAP_SCALE = 2;
 
-		public RadarController(IPlayer player, GameObject radar)
+		public RadarController(Player player, GameObject radar)
         {
 			_radar = radar;
 			_player = player.PlayerData.GameObject.transform;

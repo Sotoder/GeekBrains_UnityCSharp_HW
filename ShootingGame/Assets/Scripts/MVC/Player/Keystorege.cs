@@ -17,7 +17,7 @@ namespace Model.ShootingGame
         {
             _player = player;
             _key = 0;
-            _player.GetKey += AddKey;
+            _player.getKey += AddKey;
         }
 
         public int Key => _key;
@@ -36,7 +36,7 @@ namespace Model.ShootingGame
 
         public void Dispose()
         {
-            _player.GetKey -= AddKey;
+            _player.getKey -= AddKey;
         }
     }
 }
