@@ -6,9 +6,10 @@ namespace Model.ShootingGame
     {
         private MoveControllerData _controllerData;
 
-        public MoveController(IPlayer player, InputController inputController)
+        public MoveController(Player player, InputController inputController)
         {
             _controllerData = new MoveControllerData(player, inputController);
+
             SignOnEvents();
         }
 

@@ -7,7 +7,7 @@ namespace Model.ShootingGame
         [SerializeField] private int _hpForSwap;
         protected override void InflictDamage(IDamageable target)
         {
-            target.SwapingHP(_hpForSwap);
+            target.SwapHP(_hpForSwap);
         }
     }
 }

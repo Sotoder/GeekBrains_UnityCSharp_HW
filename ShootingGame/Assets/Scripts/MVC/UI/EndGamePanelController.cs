@@ -7,7 +7,7 @@ namespace Model.ShootingGame
     {
         private GameObject _endGamePanel;
 
-        public EndGamePanelController(IEndPanelData EndGamePanelData, IPlayer player, InputController inputController)
+        public EndGamePanelController(IEndPanelData EndGamePanelData, Player player, InputController inputController)
         {
             _buttonRestart = EndGamePanelData.ButtonRestartonEndGamePanel;
             _buttonExit = EndGamePanelData.ButtonExitonEndGamePanel;

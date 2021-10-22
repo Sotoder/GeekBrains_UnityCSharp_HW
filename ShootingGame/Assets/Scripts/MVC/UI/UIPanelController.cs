@@ -8,7 +8,7 @@ namespace Model.ShootingGame {
     public abstract class UIPanelController : IDisposable
     {
         protected InputController _inputController;
-        protected IPlayer _player;
+        protected Player _player;
         protected Button _buttonRestart;
         protected Button _buttonExit;
 
