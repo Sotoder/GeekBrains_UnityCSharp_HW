@@ -68,8 +68,6 @@ namespace Model.ShootingGame
             {
                 CameraFolow(deltaTime, camera, target);
             }
-
-
         }
 
         private void CameraFolow(float deltaTime, Camera camera, Transform target)
