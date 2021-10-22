@@ -2,8 +2,8 @@ using Model.ShootingGame;
 
 public interface IDamageable
 {
-    public void TakeDamage(int damage);
-    public void SwapHP(int hpForSwap);
+    public void TakingDamage(int damage);
+    public void SwapingHP(int hpForSwap);
 
     public PlayerData PlayerData { get; }
 }

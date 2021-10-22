@@ -10,7 +10,7 @@ public class BuffInitializator
 
     private const int BUFF_LAYER = 7;
 
-    public BuffInitializator(Player player, BuffInitializationData buffInitializationData, PickUpObjectsController pikUpObjectController, RadarController radarController)
+    public BuffInitializator(IPlayer player, BuffInitializationData buffInitializationData, PickUpObjectsController pikUpObjectController, RadarController radarController)
     {
         _buffInitializationData = buffInitializationData;
         _radarController = radarController;

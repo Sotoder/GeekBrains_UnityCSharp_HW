@@ -4,13 +4,14 @@ using static UnityEngine.Debug;
 
 namespace Model.ShootingGame
 {
-    public class Player: IController, ITriggerableOnEnter, IDamageable
+    public class Player : IController, ITriggerableOnEnter, IDamageable, IPlayer
     {
-        public UnityAction<GameObject> buffObjectCollected;
-        public UnityAction<GameObject> keyObjectCollected;
-        public UnityAction<int> takeDamage;
-        public UnityAction<int> swapHP;
-        public UnityAction getKey;
+        public UnityAction<GameObject> BuffObjectCollected { get; set; }
+        public UnityAction<GameObject> KeyObjectCollected { get; set; }
+        public UnityAction<int> TakeDamage { get; set; }
+        public UnityAction<int> SwapHP { get; set; }
+        public UnityAction GetKey { get; set; }
+
 
         private PlayerData _playerData;
         public PlayerData PlayerData { get => _playerData; }
@@ -48,20 +49,20 @@ namespace Model.ShootingGame
             }
         }
 
-        public void TakeDamage(int damage)
+        public void TakingDamage(int damage)
         {
             Log("Auch!");
-            takeDamage?.Invoke(damage);
+            TakeDamage?.Invoke(damage);
         }
 
-        public void SwapHP(int hpForSwap)
+        public void SwapingHP(int hpForSwap)
         {
-            swapHP?.Invoke(hpForSwap);
+            SwapHP?.Invoke(hpForSwap);
         }
 
-        public void GetKey()
+        public void GettingKey()
         {
-            getKey?.Invoke();
+            GetKey?.Invoke();
             Log(_playerData.Keystorege.Key);
         }
 
@@ -69,12 +70,12 @@ namespace Model.ShootingGame
         {
             if (collider.gameObject.layer == 7)
             {
-                buffObjectCollected.Invoke(collider.gameObject);
+                BuffObjectCollected.Invoke(collider.gameObject);
             }
             if (collider.gameObject.layer == 8)
             {
-                keyObjectCollected.Invoke(collider.gameObject);
-                GetKey();
+                KeyObjectCollected.Invoke(collider.gameObject);
+                GettingKey();
             }
         }
     }
