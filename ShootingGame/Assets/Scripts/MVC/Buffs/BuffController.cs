@@ -11,12 +11,12 @@ namespace Model.ShootingGame
         private List<BuffObject> _buffObjects;
         private Dictionary<BuffTypes, BuffMethod> _timerMethods;
 
-        public BuffController(Player player, List<BuffObject> buffObjects)
+        public BuffController(IPlayer player, List<BuffObject> buffObjects)
         {
             _playerParameters = player.PlayerData.Parameters;
             _buffObjects = buffObjects;
 
-            player.buffObjectCollected += CheckObjectInBuffCollection;
+            player.BuffObjectCollected += CheckObjectInBuffCollection;
 
             _timerMethods = new Dictionary<BuffTypes, BuffMethod>
             {

@@ -9,7 +9,7 @@ namespace Model.ShootingGame
         private GameObject _menuPanel;
         private bool _isMenuPanelActive;
 
-        public MenuPanelController(IMenuPanelData MenuData, Player player, InputController inputController)
+        public MenuPanelController(IMenuPanelData MenuData, IPlayer player, InputController inputController)
         {
             _buttonRestart = MenuData.ButtonRestartonMenuPanel;
             _buttonExit = MenuData.ButtonExitonMenuPanel;

@@ -42,7 +42,7 @@ namespace Model.ShootingGame
 
         protected override void InflictDamage(IDamageable target)
         {
-            target.TakeDamage(_damage);
+            target.TakingDamage(_damage);
         }
     }
 }
