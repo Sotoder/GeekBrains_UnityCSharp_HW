@@ -5,7 +5,7 @@ namespace Model.ShootingGame
     public class CameraControllerData
     {
         private readonly Camera _camera;
-        private readonly Player _player;
+        private readonly IPlayer _player;
         private readonly InputController _inputController;
         private readonly Transform _target;
 
@@ -33,14 +33,14 @@ namespace Model.ShootingGame
         public const float CAMERA_LERP_TIME = 1.2f;
 
         public Camera Camera => _camera;
-        public Player Player => _player;
+        public IPlayer Player => _player;
         public LayerMask NoPlayer => _noPlayer;
         public LayerMask Environtment => _environtment;
         public Transform Target => _target;
         public GameObject PlayerObject => _player.PlayerData.GameObject;
         public InputController InputController => _inputController;
 
-        public CameraControllerData(Camera camera, Player player, CameraInitializationData cameraInitializationData, InputController inputController)
+        public CameraControllerData(Camera camera, IPlayer player, CameraInitializationData cameraInitializationData, InputController inputController)
         {
             _camera = camera;
             _player = player;

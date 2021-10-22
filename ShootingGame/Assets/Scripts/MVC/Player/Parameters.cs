@@ -17,8 +17,8 @@ namespace Model.ShootingGame
         public Parameters(Player player, int maxHP, int maxStamina, int speed)
         {
             _player = player;
-            _player.takeDamage += GetDamage;
-            _player.swapHP += SwapHP;
+            _player.TakeDamage += GetDamage;
+            _player.SwapHP += SwapHP;
 
             currentHP = maxHP;
             currentStamina = maxStamina;
@@ -37,8 +37,8 @@ namespace Model.ShootingGame
 
         public void Dispose()
         {
-            _player.takeDamage -= GetDamage;
-            _player.swapHP -= SwapHP;
+            _player.TakeDamage -= GetDamage;
+            _player.SwapHP -= SwapHP;
         }
     }
 }
