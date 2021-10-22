@@ -20,7 +20,7 @@ namespace Model.ShootingGame
 
         public GameObject PlayerObject => _playerObject;
 
-        public MoveControllerData(Player player, InputController inputController)
+        public MoveControllerData(IPlayer player, InputController inputController)
         {
             _player = player.PlayerData;
             _inputController = inputController;

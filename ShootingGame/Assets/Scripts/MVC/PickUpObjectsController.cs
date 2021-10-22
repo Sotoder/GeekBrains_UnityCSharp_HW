@@ -13,11 +13,11 @@ public class PickUpObjectsController: IFixedExecute, IController, ITwitching, IR
     private const float TWITCH_AMPLITUDE = 0.2f;
 
 
-    public PickUpObjectsController(Player player, RadarController radarController)
+    public PickUpObjectsController(IPlayer player, RadarController radarController)
     {
         _radarController = radarController;
-        player.buffObjectCollected += DestroyBuffObject;
-        player.keyObjectCollected += DestroyBuffObject;
+        player.BuffObjectCollected += DestroyBuffObject;
+        player.KeyObjectCollected += DestroyBuffObject;
     }
 
     public void AddObjectsList(Dictionary<GameObject, float> objectList)

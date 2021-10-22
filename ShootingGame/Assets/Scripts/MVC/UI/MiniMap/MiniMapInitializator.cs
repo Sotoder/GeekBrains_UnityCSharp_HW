@@ -10,7 +10,7 @@ namespace Model.ShootingGame
 
         private const float CAMERA_HIGHT = 6.0f;
 
-        public MiniMapInitializator(Player player, MiniMapInitializationData miniMapInitializationData)
+        public MiniMapInitializator(IPlayer player, MiniMapInitializationData miniMapInitializationData)
         {
             _player = player.PlayerData.GameObject.transform;
             _camera = miniMapInitializationData.MiniMapCamera;

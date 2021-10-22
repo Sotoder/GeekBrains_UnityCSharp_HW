@@ -6,7 +6,7 @@ namespace Model.ShootingGame
         protected override void InflictDamage(IDamageable target)
         {
             int damage = target.PlayerData.Parameters.currentHP;
-            target.TakeDamage(damage);
+            target.TakingDamage(damage);
         }
     }
 }

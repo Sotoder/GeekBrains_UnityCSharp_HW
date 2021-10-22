@@ -10,7 +10,7 @@ namespace Model.ShootingGame
 
         private CameraControllerData _controllerData;
 
-        public CameraController (Player player, CameraInitializationData cameraInitializationData, InputController inputController)
+        public CameraController (IPlayer player, CameraInitializationData cameraInitializationData, InputController inputController)
         {
             var camera = Camera.main;
 
@@ -28,7 +28,7 @@ namespace Model.ShootingGame
             _controllerData.camDistance = (camera.transform.position - target.position).magnitude;
             _controllerData.camBaseMask = camera.cullingMask;
 
-            _controllerData.Player.takeDamage += CameraShake;
+            _controllerData.Player.TakeDamage += CameraShake;
             _controllerData.InputController.isCameraRotateButtonDown += CameraRotateButtonDown;
             _controllerData.InputController.isCameraRotateButtonUp += CameraRotateButtonUp;
             _controllerData.InputController.mouseXAxisOnChange += MouseAxisXOnChange;
@@ -183,7 +183,7 @@ namespace Model.ShootingGame
         }
         public void Dispose()
         {
-            _controllerData.Player.takeDamage -= CameraShake;
+            _controllerData.Player.TakeDamage -= CameraShake;
             _controllerData.InputController.isCameraRotateButtonDown -= CameraRotateButtonDown;
             _controllerData.InputController.isCameraRotateButtonUp -= CameraRotateButtonUp;
             _controllerData.InputController.mouseXAxisOnChange -= MouseAxisXOnChange;
